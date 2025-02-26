@@ -1,60 +1,75 @@
-# File: /file-organizer/file-organizer/README.md
+# Datei-Organisierer
 
-# File Organizer
+Dieses Projekt ist eine einfache Python-Anwendung, die Dateien in Ihrem Downloads-Ordner automatisch sortiert, indem sie diese basierend auf ihren Dateitypen in separate Ordner einordnet. Dies hilft dabei, Ihren Downloads-Ordner übersichtlich zu halten und macht es einfacher, Dateien wiederzufinden.
 
-This project is a simple Python application that organizes files in your Downloads folder by sorting them into separate folders based on their file types. It helps keep your Downloads folder tidy and makes it easier to find files.
+## Funktionen
 
-## Features
+-   Automatische Sortierung von Dateien in entsprechende Ordner basierend auf ihren Typen (z.B. Bilder, Musik, Dokumente)
+-   Unterstützung verschiedener Dateitypen wie Bilder, Audio-Dateien, Dokumente und mehr
+-   Automatisches Hinzufügen des Erstellungsdatums zum Dateinamen
+-   Verschieben von Ordnern in einen "Unorganized"-Ordner
+-   Bereinigung von Dateinamen (Ersetzung von Leerzeichen und Unterstrichen durch Bindestriche)
 
-- Automatically sorts files into designated folders based on their types (e.g., images, music, documents).
-- Supports various file types including images, audio files, documents, and more.
-
-## Project Structure
+## Projektstruktur
 
 ```
 file-organizer
 ├── src
-│   ├── main.py          # Entry point of the application
+│   ├── main.py          # Hauptprogramm
 │   └── utils
-│       └── file_utils.py # Utility functions for file handling
-├── requirements.txt     # List of dependencies
-└── README.md            # Project documentation
+│       ├── file_utils.py # Hilfsfunktionen für die Dateiverwaltung
+│       └── file_types.py # Definition der Dateitypen
+├── requirements.txt     # Abhängigkeiten
+└── README.md           # Projektdokumentation
 ```
 
-## Requirements
+## Voraussetzungen
 
-To run this project, you need to have Python installed on your machine. Additionally, you may need to install the required dependencies listed in the `requirements.txt` file.
+Um dieses Projekt ausführen zu können, benötigen Sie Python auf Ihrem Computer. Zusätzliche Abhängigkeiten sind in der `requirements.txt` aufgeführt.
 
 ## Installation
 
-1. Clone the repository to your local machine:
-   ```
-   git clone <repository-url>
-   ```
+1. Klonen Sie das Repository auf Ihren lokalen Computer:
 
-2. Navigate to the project directory:
-   ```
-   cd file-organizer
-   ```
+    ```
+    git clone https://github.com/cherzlieb/py-file-organizer
+    ```
 
-3. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+2. Wechseln Sie in das Projektverzeichnis:
 
-## Usage
+    ```
+    cd file-organizer
+    ```
 
-To organize your Downloads folder, run the following command:
-```
-python src/main.py
-```
+3. Installieren Sie die erforderlichen Abhängigkeiten:
+    ```
+    pip install -r requirements.txt
+    ```
 
-Make sure to adjust the script if your Downloads folder is located in a different path.
+## Verwendung
 
-## Contributing
+1. Öffnen Sie die Datei `src/main.py` und passen Sie den Pfad zu Ihrem Downloads-Ordner an:
 
-Contributions are welcome! If you have suggestions for improvements or new features, feel free to open an issue or submit a pull request.
+    ```python
+    DOWNLOADS_FOLDER = "E:/Downloads"  # Ändern Sie dies zu Ihrem Downloads-Pfad
+    ```
 
-## License
+2. Führen Sie das Programm aus:
+    ```
+    python src/main.py
+    ```
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+Das Programm wird:
+
+-   Dateien nach Typ sortieren und in entsprechende Unterordner verschieben
+-   Dem Dateinamen das Erstellungsdatum voranstellen
+-   Ordner in einen "Unorganized"-Ordner verschieben
+-   Den Fortschritt in der Konsole anzeigen
+
+## Mitwirken
+
+Beiträge sind willkommen! Wenn Sie Vorschläge für Verbesserungen oder neue Funktionen haben, können Sie gerne ein Issue eröffnen oder einen Pull Request einreichen.
+
+## Lizenz
+
+Dieses Projekt ist unter der MIT-Lizenz lizenziert. Weitere Details finden Sie in der LICENSE-Datei.
