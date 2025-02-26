@@ -7,10 +7,9 @@ def clean_filename(filename):
     # Replace spaces and underscores with hyphens
     return filename.replace(' ', '-').replace('_', '-')
 
-def organize_files(download_folder, organized_folder, file_types, logger):
+def organize_files(download_folder, organized_folder, unorganized_folder, file_types, logger):
     try:
         # Create organized and unorganized folders if they don't exist
-        unorganized_folder = os.path.join(download_folder, "Unorganized")
         for folder in [organized_folder, unorganized_folder]:
             if not os.path.exists(folder):
                 os.makedirs(folder)
