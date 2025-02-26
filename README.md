@@ -4,23 +4,32 @@ Dieses Projekt ist eine einfache Python-Anwendung, die Dateien in Ihrem Download
 
 ## Funktionen
 
--   Automatische Sortierung von Dateien in entsprechende Ordner basierend auf ihren Typen (z.B. Bilder, Musik, Dokumente)
--   Unterstützung verschiedener Dateitypen wie Bilder, Audio-Dateien, Dokumente und mehr
--   Automatisches Hinzufügen des Erstellungsdatums zum Dateinamen
--   Verschieben von Ordnern in einen "Unorganized"-Ordner
--   Bereinigung von Dateinamen (Ersetzung von Leerzeichen und Unterstrichen durch Bindestriche)
+- Automatische Sortierung von Dateien in entsprechende Ordner basierend auf ihren Typen
+- Unterstützung verschiedener Dateitypen
+- Automatisches Hinzufügen des Änderungs- oder Erstellungsdatums zum Dateinamen (konfigurierbar)
+- Verschieben von Ordnern in einen "Unorganized"-Ordner
+- Bereinigung von Dateinamen
+- Konfiguration über .env Datei
+- Ausführliches Logging
 
 ## Projektstruktur
 
 ```
-file-organizer
-├── src
-│   ├── main.py          # Hauptprogramm
-│   └── utils
-│       ├── file_utils.py # Hilfsfunktionen für die Dateiverwaltung
-│       └── file_types.py # Definition der Dateitypen
-├── requirements.txt     # Abhängigkeiten
-└── README.md           # Projektdokumentation
+file-organizer/
+├── src/
+│   ├── main.py                 # Hauptprogramm
+│   ├── config.py               # Konfigurationsklassen
+│   └── utils/
+│       ├── file_utils.py       # Hauptlogik für Dateiorganisation
+│       ├── file_types.py       # Definition der Dateitypen
+│       ├── file_operations.py  # Dateioperationen
+│       ├── date_utils.py       # Datumsfunktionen
+│       ├── path_utils.py       # Pfadoperationen
+│       └── filename_utils.py   # Dateinamenverarbeitung
+├── logs/                       # Logdateien (wird automatisch erstellt)
+├── .env.example                # Beispiel-Umgebungsvariablen
+├── requirements.txt            # Python-Abhängigkeiten
+└── README.md                   # Projektdokumentation
 ```
 
 ## Voraussetzungen
@@ -62,18 +71,27 @@ Um dieses Projekt ausführen zu können, benötigen Sie Python auf Ihrem Compute
     pip install -r requirements.txt
     ```
 
+## Konfiguration
+
+1. Kopieren Sie die `.env.example` Datei zu `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+
+2. Passen Sie die Pfade in der [.env](http://_vscodecontentref_/12) Datei an:
+    ```
+    SOURCE_FOLDER = ""      # Hier den Pfad angeben, welcher sortiert werden soll.
+    ORGANIZED_FOLDER = ""   # Hier den Pfad angeben, wohin die sortierten Dateien sollen (in dem Unterordner Organized).
+    UNORGANIZED_FOLDER = "" # Hier den Pfad angeben, wohin die unsortierten Ordner sollen (in dem Unterordner Unorganized).
+    DEBUG = False           # Hier angeben ob der Debug Modus aktiviert werden soll.
+    ```
+
 ## Verwendung
 
-1. Öffnen Sie die Datei `src/main.py` und passen Sie den Pfad zu Ihrem Downloads-Ordner an:
-
-    ```python
-    DOWNLOADS_FOLDER = "E:/Downloads"  # Ändern Sie dies zu Ihrem Downloads-Pfad
-    ```
-
-2. Führen Sie das Programm aus:
-    ```
-    python src/main.py
-    ```
+Führen Sie das Programm aus:
+```bash
+python src/main.py
+```
 
 Das Programm wird:
 
@@ -89,3 +107,13 @@ Beiträge sind willkommen! Wenn Sie Vorschläge für Verbesserungen oder neue Fu
 ## Lizenz
 
 Dieses Projekt ist unter der MIT-Lizenz lizenziert. Weitere Details finden Sie in der LICENSE-Datei.
+
+## Änderungen
+
+Die wichtigsten Änderungen sind:
+- Aktualisierte Projektstruktur
+- Neue Konfigurationsmethode über `.env`
+- Präzisere Beschreibung der Datumsfunktionalität
+- Hinzufügung der neuen Logging-Funktion
+- Entfernung der veralteten `DOWNLOADS_FOLDER` Referenz
+- Genauere Beschreibung der Modulstruktur
