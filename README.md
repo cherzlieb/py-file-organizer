@@ -31,18 +31,34 @@ Um dieses Projekt ausführen zu können, benötigen Sie Python auf Ihrem Compute
 
 1. Klonen Sie das Repository auf Ihren lokalen Computer:
 
-    ```
+    ```bash
     git clone https://github.com/cherzlieb/py-file-organizer
     ```
 
 2. Wechseln Sie in das Projektverzeichnis:
 
-    ```
+    ```bash
     cd file-organizer
     ```
 
-3. Installieren Sie die erforderlichen Abhängigkeiten:
+3. Erstellen Sie eine virtuelle Umgebung:
+
+    ```bash
+    python -m venv venv
     ```
+
+4. Aktivieren Sie die virtuelle Umgebung:
+
+    ```bash
+    # Windows
+    .\venv\Scripts\activate
+
+    # Linux/Mac
+    source venv/bin/activate
+    ```
+
+5. Installieren Sie die erforderlichen Abhängigkeiten:
+    ```bash
     pip install -r requirements.txt
     ```
 
