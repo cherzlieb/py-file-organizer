@@ -83,6 +83,7 @@ Um dieses Projekt ausführen zu können, benötigen Sie Python auf Ihrem Compute
     SOURCE_FOLDER = ""      # Hier den Pfad angeben, welcher sortiert werden soll.
     ORGANIZED_FOLDER = ""   # Hier den Pfad angeben, wohin die sortierten Dateien sollen (in dem Unterordner Organized).
     UNORGANIZED_FOLDER = "" # Hier den Pfad angeben, wohin die unsortierten Ordner sollen (in dem Unterordner Unorganized).
+    LOG_FILE = ""           # Pfad zur Log-Datei, sowie der Name (liegt im Projekt-Ordner)
     DEBUG = False           # Hier angeben ob der Debug Modus aktiviert werden soll.
     ```
 
