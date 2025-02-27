@@ -1,0 +1,74 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: File Organizer 1.0\n"
+"POT-Creation-Date: 2024-02-27 12:00+0100\n"
+"PO-Revision-Date: 2024-02-27 12:00+0100\n"
+"Last-Translator: Your Name\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "File Organizer"
+msgstr "Datei-Organisierer"
+
+msgid "Source Folder:"
+msgstr "Quellordner:"
+
+msgid "Debug Mode"
+msgstr "Debug-Modus"
+
+msgid "Language:"
+msgstr "Sprache:"
+
+msgid "Organized Folder:"
+msgstr "Sortierter Ordner:"
+
+msgid "Unorganized Folder:"
+msgstr "Unsortierter Ordner:"
+
+msgid "Use Creation Date"
+msgstr "Erstellungsdatum verwenden"
+
+msgid "Force Date"
+msgstr "Datum erzwingen"
+
+msgid "Add Date to Folders"
+msgstr "Datum zu Ordnern hinzufügen"
+
+msgid "Log File Location:"
+msgstr "Log-Datei Speicherort:"
+
+msgid "Browse"
+msgstr "Durchsuchen"
+
+msgid "Save Configuration"
+msgstr "Konfiguration speichern"
+
+msgid "Start Sorting"
+msgstr "Sortierung starten"
+
+msgid "Warning"
+msgstr "Warnung"
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "Success"
+msgstr "Erfolg"
+
+msgid "Please select a log file location"
+msgstr "Bitte wählen Sie einen Speicherort für die Log-Datei"
+
+msgid "Source folder not found: {}"
+msgstr "Quellordner nicht gefunden: {}"
+
+msgid "File organization completed successfully!"
+msgstr "Dateien wurden erfolgreich sortiert!"
+
+msgid "Error during file organization: {}"
+msgstr "Fehler bei der Dateisortierung: {}"
+
+msgid "Language changed successfully. Please restart the application for full effect."
+msgstr "Sprache erfolgreich geändert. Bitte starten Sie die Anwendung neu, damit alle Änderungen wirksam werden."

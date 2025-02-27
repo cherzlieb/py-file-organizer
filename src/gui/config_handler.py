@@ -14,7 +14,8 @@ class ConfigHandler:
             'DEBUG': os.getenv('DEBUG', 'False'),
             'USE_CREATION_DATE': os.getenv('USE_CREATION_DATE', 'False'),
             'FORCE_DATE': os.getenv('FORCE_DATE', 'False'),
-            'DATE_FOLDERS': os.getenv('DATE_FOLDERS', 'False')
+            'DATE_FOLDERS': os.getenv('DATE_FOLDERS', 'False'),
+            'LANGUAGE': os.getenv('LANGUAGE', 'en')
         }
 
     @staticmethod

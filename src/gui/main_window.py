@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
-                              QCheckBox, QPushButton, QMessageBox)
+                              QCheckBox, QPushButton, QMessageBox, QLabel, QComboBox)
 from PySide6.QtCore import Qt
 import os
 import sys
@@ -7,26 +7,41 @@ import logging
 from utils.file_utils import organize_files_by_type
 from utils.file_types import FILE_TYPES
 from core.config import OrganizerConfig
+from core.translation import Translation
 from .components import FolderEntryWidget, LogPathWidget
 from .config_handler import ConfigHandler
+from gettext import gettext as _
 
 class FileOrganizerWindow(QMainWindow):
     """Main window of the File Organizer application."""
     def __init__(self, logger):
         super().__init__()
         self.logger = logger
-        self.default_height = None  # Add this line
-        
-        # Setup UI
-        self.setWindowTitle("File Organizer")
-        self.setMinimumWidth(600)
+        self.default_height = None
         
         # Create central widget and main layout
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         self.main_layout = QVBoxLayout(central_widget)
         
-        # Create and setup UI components
+        # Load initial configuration and set language BEFORE creating UI components
+        config = ConfigHandler.load_config()
+        initial_language = config.get('LANGUAGE', 'en')
+        
+        # Setup initial translation
+        translator = Translation.setup_language(initial_language)
+        translator.install()
+        
+        # Force update of gettext function
+        import builtins
+        builtins.__dict__['_'] = translator.gettext
+        
+        # Update global _ in current module
+        global _
+        _ = translator.gettext
+        
+        # Create and setup UI components with translations
+        self.setup_language_selection()
         self.setup_folder_entries()
         self.setup_checkboxes()
         self.setup_log_path()
@@ -35,10 +50,13 @@ class FileOrganizerWindow(QMainWindow):
         # Add spacing at the bottom
         self.main_layout.addStretch()
         
-        # Load initial configuration
+        # Load configuration values
         self.load_config()
         
-        # Store initial window size after all widgets are added
+        # Update UI with initial translations
+        self.retranslate_ui()  # Add this line to translate everything at startup
+        
+        # Store initial window size
         self.adjustSize()
         self.default_height = self.height()
     
@@ -78,6 +96,33 @@ class FileOrganizerWindow(QMainWindow):
         self.log_widget.setVisible(False)
         self.main_layout.addWidget(self.log_widget)
         self.debug_cb.stateChanged.connect(self.toggle_log_path)
+    
+    def setup_language_selection(self):
+        """Setup language selection dropdown."""
+        language_container = QWidget()
+        language_layout = QHBoxLayout(language_container)
+        
+        # Create label and store reference
+        self.language_label = QLabel(_("Language:"))  # Store reference
+        self.language_combo = QComboBox()
+        
+        # Add available languages
+        for code, name in Translation.get_language_names().items():
+            self.language_combo.addItem(name, code)
+        
+        # Set current language from config
+        current_language = ConfigHandler.load_config().get('LANGUAGE', 'en')
+        index = self.language_combo.findData(current_language)
+        if index >= 0:
+            self.language_combo.setCurrentIndex(index)
+        
+        # Connect signal for language change
+        self.language_combo.currentIndexChanged.connect(self.change_language)
+        
+        language_layout.addWidget(self.language_label)  # Use stored reference
+        language_layout.addWidget(self.language_combo)
+        
+        self.main_layout.addWidget(language_container)
     
     def setup_buttons(self):
         """Setup action buttons."""
@@ -130,7 +175,8 @@ class FileOrganizerWindow(QMainWindow):
             'USE_CREATION_DATE': str(self.creation_date_cb.isChecked()),
             'FORCE_DATE': str(self.force_date_cb.isChecked()),
             'DATE_FOLDERS': str(self.date_folders_cb.isChecked()),
-            'LOG_FILE': "logs/file_organizer.log"
+            'LOG_FILE': "logs/file_organizer.log",
+            'LANGUAGE': self.language_combo.currentData()  # Save current language
         }
         
         ConfigHandler.save_config(config)
@@ -184,3 +230,67 @@ class FileOrganizerWindow(QMainWindow):
             
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error during file organization: {str(e)}")
+    
+    def change_language(self):
+        """Change application language."""
+        language_code = self.language_combo.currentData()
+        print(f"Changing language to: {language_code}")
+        
+        # Setup translation
+        translator = Translation.setup_language(language_code)
+        
+        # Force update of gettext function
+        import builtins
+        builtins.__dict__['_'] = translator.gettext
+        
+        # Update global _ in current module
+        global _
+        _ = translator.gettext
+        
+        # Test translation immediately
+        test_text = _("File Organizer")
+        print(f"Translation test in change_language: '{test_text}'")
+        
+        # Update UI
+        self.retranslate_ui()
+        
+        # Save config
+        config = ConfigHandler.load_config()
+        config['LANGUAGE'] = language_code
+        ConfigHandler.save_config(config)
+
+    def retranslate_ui(self):
+        """Update all UI texts with new language."""
+        # Update window title
+        self.setWindowTitle(_("File Organizer"))
+        
+        # Update language selector using stored reference
+        self.language_label.setText(_("Language:"))
+        
+        # Update folder entries
+        for key, entry in self.folder_entries.items():
+            if key == 'SOURCE_FOLDER':
+                entry.label.setText(_("Source Folder:"))
+            elif key == 'ORGANIZED_FOLDER':
+                entry.label.setText(_("Organized Folder:"))
+            elif key == 'UNORGANIZED_FOLDER':
+                entry.label.setText(_("Unorganized Folder:"))
+            entry.browse_btn.setText(_("Browse"))
+        
+        # Update checkboxes
+        self.debug_cb.setText(_("Debug Mode"))
+        self.creation_date_cb.setText(_("Use Creation Date"))
+        self.force_date_cb.setText(_("Force Date"))
+        self.date_folders_cb.setText(_("Add Date to Folders"))
+        
+        # Update log widget
+        if self.log_widget:
+            self.log_widget.label.setText(_("Log File Location:"))
+            self.log_widget.browse_btn.setText(_("Browse"))
+        
+        # Update buttons
+        for button in self.findChildren(QPushButton):
+            if button.text() == "Save Configuration":
+                button.setText(_("Save Configuration"))
+            elif button.text() == "Start Sorting":
+                button.setText(_("Start Sorting"))
