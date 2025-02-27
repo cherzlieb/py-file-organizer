@@ -4,32 +4,38 @@ Dieses Projekt ist eine einfache Python-Anwendung, die Dateien in Ihrem Download
 
 ## Funktionen
 
--   Automatische Sortierung von Dateien in entsprechende Ordner basierend auf ihren Typen
--   Unterstützung verschiedener Dateitypen
--   Automatisches Hinzufügen des Änderungs- oder Erstellungsdatums zum Dateinamen (konfigurierbar)
--   Verschieben von Ordnern in einen "Unorganized"-Ordner
--   Bereinigung von Dateinamen
--   Konfiguration über .env Datei
--   Ausführliches Logging
+- Automatische Sortierung von Dateien in entsprechende Ordner basierend auf ihren Typen
+- Unterstützung verschiedener Dateitypen
+- Automatisches Hinzufügen des Änderungs- oder Erstellungsdatums zum Dateinamen (konfigurierbar)
+- Verschieben von Ordnern in einen "Unorganized"-Ordner
+- Bereinigung von Dateinamen
+- Konfiguration über .env Datei
+- Ausführliches Logging
+- Grafische Benutzeroberfläche (GUI)
+- Mehrsprachenunterstützung (Deutsch/Englisch)
 
 ## Projektstruktur
 
 ```path
 file-organizer/
 ├── src/
-│   ├── main.py                 # Hauptprogramm
-│   ├── config.py               # Konfigurationsklassen
-│   └── utils/
-│       ├── file_utils.py       # Hauptlogik für Dateiorganisation
-│       ├── file_types.py       # Definition der Dateitypen
-│       ├── file_operations.py  # Dateioperationen
-│       ├── date_utils.py       # Datumsfunktionen
-│       ├── path_utils.py       # Pfadoperationen
-│       └── filename_utils.py   # Dateinamenverarbeitung
-├── logs/                       # Logdateien (wird automatisch erstellt)
-├── .env.example                # Beispiel-Umgebungsvariablen
-├── requirements.txt            # Python-Abhängigkeiten
-└── README.md                   # Projektdokumentation
+│   ├── core/
+│   │   ├── config.py           # Konfigurationsklassen
+│   │   ├── constants.py        # Konstanten
+│   │   └── translation.py      # Übersetzungsfunktionen
+│   ├── gui/
+│   │   ├── components.py       # GUI-Komponenten
+│   │   ├── config_handler.py   # Konfigurationsverwaltung
+│   │   └── main_window.py      # Hauptfenster
+│   ├── utils/                  # Hilfsfunktionen
+│   │   ├── file_types.py       # Dateityp-Definitionen
+│   │   └── file_utils.py       # Dateioperationen
+│   └── main.py                 # Hauptprogramm
+├── locales/                    # Sprachdateien
+│   ├── de/                     # Deutsche Übersetzungen
+│   └── en/                     # Englische Übersetzungen
+├── logs/                       # Logdateien
+└── README.md                   # Dokumentation
 ```
 
 ## Voraussetzungen
@@ -74,21 +80,41 @@ Um dieses Projekt ausführen zu können, benötigen Sie Python auf Ihrem Compute
 
 ## Konfiguration
 
-1. Kopieren Sie die `.env.example` Datei zu `.env`:
+Die Konfiguration kann über die grafische Benutzeroberfläche oder die `.env` Datei erfolgen.
 
-    ```bash
-    cp .env.example .env
-    ```
+### Über die GUI (empfohlen)
 
-2. Passen Sie die Pfade in der `.env` Datei an:
+Starten Sie das Programm und konfigurieren Sie die Einstellungen im Hauptfenster:
 
-    ```ini
-    SOURCE_FOLDER = ""      # Hier den Pfad angeben, welcher sortiert werden soll.
-    ORGANIZED_FOLDER = ""   # Hier den Pfad angeben, wohin die sortierten Dateien sollen (in dem Unterordner Organized).
-    UNORGANIZED_FOLDER = "" # Hier den Pfad angeben, wohin die unsortierten Ordner sollen (in dem Unterordner Unorganized).
-    LOG_FILE = ""           # Pfad zur Log-Datei, sowie der Name (liegt im Projekt-Ordner)
-    DEBUG = False           # Hier angeben ob der Debug Modus aktiviert werden soll.
-    ```
+1. Wählen Sie die gewünschte Sprache (Deutsch/Englisch)
+2. Geben Sie die Ordnerpfade an:
+   - Quellordner: Der zu organisierende Ordner
+   - Zielordner: Ordner für sortierte Dateien
+   - Nicht-sortierbare: Ordner für nicht sortierbare Elemente
+3. Aktivieren Sie optional:
+   - Debug-Modus für detaillierte Protokollierung
+   - Erstellungsdatum verwenden
+   - Datum erzwingen
+   - Datum zu Ordnern hinzufügen
+4. Klicken Sie auf "Konfiguration speichern"
+
+Die Einstellungen werden automatisch in der `.env` Datei gespeichert.
+
+### Manuelle Konfiguration (alternativ)
+
+Alternativ können Sie die `.env` Datei direkt bearbeiten:
+
+```ini
+SOURCE_FOLDER=""         # Quellordner
+ORGANIZED_FOLDER=""      # Zielordner für sortierte Dateien
+UNORGANIZED_FOLDER=""    # Ordner für nicht sortierbare Elemente
+LOG_FILE=""             # Pfad zur Log-Datei
+DEBUG=False             # Debug-Modus (True/False)
+USE_CREATION_DATE=False # Erstellungsdatum verwenden (True/False)
+FORCE_DATE=False        # Datum erzwingen (True/False)
+DATE_FOLDERS=False      # Datum zu Ordnern hinzufügen (True/False)
+LANGUAGE="de"           # Sprache (de/en)
+```
 
 ## Verwendung
 
@@ -97,6 +123,21 @@ Führen Sie das Programm aus:
 ```bash
 python src/main.py
 ```
+
+### Grafische Benutzeroberfläche (GUI)
+
+Nach dem Start des Programms erscheint das Hauptfenster mit folgenden Optionen:
+
+- **Sprache**: Wählen Sie zwischen Deutsch und Englisch
+- **Quellordner**: Der zu organisierende Ordner
+- **Zielordner**: Ordner für sortierte Dateien
+- **Nicht-sortierbare**: Ordner für nicht sortierbare Elemente
+- **Debug-Modus**: Aktiviert detaillierte Protokollierung
+- **Erstellungsdatum verwenden**: Nutzt das Erstellungsdatum statt Änderungsdatum
+- **Datum erzwingen**: Fügt immer ein Datum hinzu
+- **Datum zu Ordnern**: Fügt auch Ordnern ein Datum hinzu
+
+Die Einstellungen werden automatisch gespeichert und beim nächsten Start wiederhergestellt.
 
 Das Programm wird:
 

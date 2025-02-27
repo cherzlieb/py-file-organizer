@@ -1,50 +1,56 @@
 # File Organizer
 
-This project is a simple Python application that automatically sorts files in your Downloads folder by organizing them into separate folders based on their file types. This helps keep your Downloads folder tidy and makes it easier to find files.
+This project is a simple Python application that automatically organizes files in your downloads folder by sorting them into separate folders based on their file types. This helps keep your downloads folder tidy and makes it easier to find files.
 
 ## Features
 
--   Automatically sorts files into appropriate folders based on their types
--   Supports various file types
--   Automatically adds modification or creation date to the filename (configurable)
--   Moves folders to an "Unorganized" folder
--   Cleans up filenames
--   Configuration via .env file
--   Detailed logging
+- Automatic sorting of files into appropriate folders based on their types
+- Support for various file types
+- Automatically adds modification or creation date to filenames (configurable)
+- Moves folders to an "Unorganized" folder
+- Filename cleanup
+- Configuration via .env file
+- Detailed logging
+- Graphical User Interface (GUI)
+- Multi-language support (English/German)
 
 ## Project Structure
 
 ```path
 file-organizer/
 ├── src/
-│   ├── main.py                 # Hauptprogramm
-│   ├── config.py               # Konfigurationsklassen
-│   └── utils/
-│       ├── file_utils.py       # Hauptlogik für Dateiorganisation
-│       ├── file_types.py       # Definition der Dateitypen
-│       ├── file_operations.py  # Dateioperationen
-│       ├── date_utils.py       # Datumsfunktionen
-│       ├── path_utils.py       # Pfadoperationen
-│       └── filename_utils.py   # Dateinamenverarbeitung
-├── logs/                       # Logdateien (wird automatisch erstellt)
-├── .env.example                # Beispiel-Umgebungsvariablen
-├── requirements.txt            # Python-Abhängigkeiten
-└── README.md                   # Projektdokumentation
+│   ├── core/
+│   │   ├── config.py           # Configuration classes
+│   │   ├── constants.py        # Constants
+│   │   └── translation.py      # Translation functions
+│   ├── gui/
+│   │   ├── components.py       # GUI components
+│   │   ├── config_handler.py   # Configuration handling
+│   │   └── main_window.py      # Main window
+│   ├── utils/                  # Helper functions
+│   │   ├── file_types.py       # File type definitions
+│   │   └── file_utils.py       # File operations
+│   └── main.py                 # Main program
+├── locales/                    # Language files
+│   ├── de/                     # German translations
+│   └── en/                     # English translations
+├── logs/                       # Log files
+└── README.md                   # Documentation
 ```
 
 ## Prerequisites
 
-To run this project, you need Python installed on your computer. Additional dependencies are listed in the `requirements.txt` file.
+To run this project, you need Python installed on your computer. Additional dependencies are listed in `requirements.txt`.
 
 ## Installation
 
-1. Clone the repository to your local computer:
+1. Clone the repository to your local machine:
 
     ```bash
     git clone https://github.com/cherzlieb/py-file-organizer
     ```
 
-2. Navigate to the project directory:
+2. Change to the project directory:
 
     ```bash
     cd file-organizer
@@ -74,21 +80,41 @@ To run this project, you need Python installed on your computer. Additional depe
 
 ## Configuration
 
-1. Copy the `.env.example` file to `.env`:
+Configuration can be done through the graphical user interface or the `.env` file.
 
-    ```bash
-    cp .env.example .env
-    ```
+### Via GUI (recommended)
 
-2. Adjust the paths in the `.env` file:
+Start the program and configure the settings in the main window:
 
-    ```ini
-    SOURCE_FOLDER = ""      # Specify the path to be sorted.
-    ORGANIZED_FOLDER = ""   # Specify the path where sorted files should go (in the Organized subfolder).
-    UNORGANIZED_FOLDER = "" # Specify the path where unsorted folders should go (in the Unorganized subfolder).
-    LOG_FILE = ""           # Path to the log file, including the name (located in the project folder).
-    DEBUG = False           # Specify whether to enable debug mode.
-    ```
+1. Select your preferred language (English/German)
+2. Specify the folder paths:
+   - Source folder: The folder to be organized
+   - Target folder: Folder for sorted files
+   - Non-sortable: Folder for non-sortable items
+3. Optionally enable:
+   - Debug mode for detailed logging
+   - Use creation date
+   - Force date
+   - Add date to folders
+4. Click "Save Configuration"
+
+Settings are automatically saved in the `.env` file.
+
+### Manual Configuration (alternative)
+
+Alternatively, you can edit the `.env` file directly:
+
+```ini
+SOURCE_FOLDER=""         # Source folder
+ORGANIZED_FOLDER=""      # Target folder for sorted files
+UNORGANIZED_FOLDER=""    # Folder for non-sortable items
+LOG_FILE=""             # Path to log file
+DEBUG=False             # Debug mode (True/False)
+USE_CREATION_DATE=False # Use creation date (True/False)
+FORCE_DATE=False        # Force date (True/False)
+DATE_FOLDERS=False      # Add date to folders (True/False)
+LANGUAGE="en"           # Language (en/de)
+```
 
 ## Usage
 
@@ -98,12 +124,27 @@ Run the program:
 python src/main.py
 ```
 
+### Graphical User Interface (GUI)
+
+After starting the program, the main window appears with the following options:
+
+- **Language**: Choose between English and German
+- **Source Folder**: The folder to be organized
+- **Target Folder**: Folder for sorted files
+- **Non-sortable**: Folder for non-sortable items
+- **Debug Mode**: Enables detailed logging
+- **Use Creation Date**: Uses creation date instead of modification date
+- **Force Date**: Always adds a date
+- **Add Date to Folders**: Also adds dates to folders
+
+Settings are automatically saved and restored on next startup.
+
 The program will:
 
--   Sort files by type and move them to corresponding subfolders
--   Prepend the creation date to the filename
--   Move folders to an "Unorganized" folder
--   Display progress in the console
+- Sort files by type and move them to appropriate subfolders
+- Prepend the creation date to the filename
+- Move folders to an "Unorganized" folder
+- Show progress in the console
 
 ## Contributing
 
@@ -111,15 +152,15 @@ Contributions are welcome! If you have suggestions for improvements or new featu
 
 ## License
 
-This project is licensed under the MIT License. For more details, see the LICENSE file.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Changes
 
-The main changes are:
+Key changes include:
 
--   Updated project structure
--   New configuration method via `.env`
--   More precise description of date functionality
--   Addition of the new logging feature
--   Removal of the outdated `DOWNLOADS_FOLDER` reference
--   More accurate description of the module structure
+- Updated project structure
+- New configuration method via `.env`
+- More precise description of date functionality
+- Addition of new logging feature
+- Removal of outdated `DOWNLOADS_FOLDER` reference
+- More detailed module structure description
