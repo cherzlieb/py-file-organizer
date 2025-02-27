@@ -10,16 +10,17 @@ from config import OrganizerConfig, Config
 load_dotenv()
 
 # Setup logging with file output
-log_file = os.path.join(os.path.dirname(__file__), '..', 'logs', 'file_organizer.log')
+log_file = os.path.join(os.path.dirname(__file__), '..',
+                        'logs', 'file_organizer.log')
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
 
 logging.basicConfig(
     level=Config.LOG_LEVEL,
     format=Config.LOG_FORMAT,
-    datefmt=Config.DATE_FMT,  # Fügt das neue Datumsformat hinzu
+    datefmt=Config.DATE_FMT,
     handlers=[
-        logging.FileHandler(log_file),
-        logging.StreamHandler(sys.stdout)  # Behält auch die Konsolenausgabe
+        logging.FileHandler(log_file, encoding='utf-8'),
+        logging.StreamHandler(sys.stdout)
     ]
 )
 logger = logging.getLogger(__name__)
@@ -52,17 +53,19 @@ def create_config() -> OrganizerConfig:
         force_date=False
     )
 
+
 def main() -> None:
     """Main entry point of the application."""
     load_dotenv()
-    
+
     config = create_config()
-    
+
     try:
         organize_files_by_type(config)
     except Exception as e:
         logger.error(f"Error during file organization: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
