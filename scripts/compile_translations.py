@@ -24,8 +24,6 @@ def compile_translations():
             
             with open(mo_file, 'wb') as mo_output:
                 write_mo(mo_output, catalog)
-                
-            print(f"Successfully compiled {po_file} to {mo_file}")
         except Exception as e:
             print(f"Error compiling {po_file}: {e}")
 

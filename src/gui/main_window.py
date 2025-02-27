@@ -234,7 +234,6 @@ class FileOrganizerWindow(QMainWindow):
     def change_language(self):
         """Change application language."""
         language_code = self.language_combo.currentData()
-        print(f"Changing language to: {language_code}")
         
         # Setup translation
         translator = Translation.setup_language(language_code)
@@ -249,7 +248,6 @@ class FileOrganizerWindow(QMainWindow):
         
         # Test translation immediately
         test_text = _("File Organizer")
-        print(f"Translation test in change_language: '{test_text}'")
         
         # Update UI
         self.retranslate_ui()

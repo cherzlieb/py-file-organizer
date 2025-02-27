@@ -20,15 +20,11 @@ class Translation:
                 '..', 
                 'locales'
             ))
-            print(f"Loading translations from: {locale_dir}")
-            print(f"Requested language: {language}")
             
             # Check if .mo file exists
             mo_path = os.path.join(locale_dir, language, 'LC_MESSAGES', 'messages.mo')
             if not os.path.exists(mo_path):
                 print(f"Warning: Translation file not found at {mo_path}")
-            else:
-                print(f"Found translation file at {mo_path}")
             
             # Create translator
             translator = gettext.translation(
@@ -40,7 +36,6 @@ class Translation:
             
             # Test translation
             test_text = translator.gettext("File Organizer")
-            print(f"Translation test: 'File Organizer' -> '{test_text}'")
             
             # Install globally
             translator.install()
@@ -49,7 +44,6 @@ class Translation:
             return translator
             
         except Exception as e:
-            print(f"Error setting up translation: {str(e)}")
             return gettext.NullTranslations()
 
     @staticmethod
