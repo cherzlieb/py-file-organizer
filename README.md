@@ -1,5 +1,7 @@
 # Datei-Organisierer / File Organizer
 
+[![Release](https://img.shields.io/github/v/release/cherzlieb/py-file-organizer)](https://github.com/cherzlieb/py-file-organizer/releases)
+
 Dieses Projekt ist eine Python-Anwendung mit grafischer Benutzeroberfläche, die Dateien automatisch basierend auf ihren Dateitypen sortiert. Die Anwendung unterstützt mehrere Sprachen und bietet umfangreiche Konfigurationsmöglichkeiten.
 
 This is a Python application with a graphical user interface that automatically organizes files based on their types. The application supports multiple languages and offers extensive configuration options.
@@ -65,3 +67,9 @@ python src/main.py
 ### Screenshots
 
 ![Screenshot](docs/images/screenshot.png)
+
+## Development / Entwicklung
+
+For build and deployment instructions, see [DEPLOY.md](docs/DEPLOY.md).
+
+Informationen zum Erstellen und Veröffentlichen finden Sie in der [DEPLOY.md](docs/DEPLOY.md).
