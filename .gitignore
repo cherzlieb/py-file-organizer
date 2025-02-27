@@ -126,3 +126,10 @@ cython_debug/
 # Logs
 logs/
 *.log
+
+# Build and Release
+/dist/
+/build/
+/Release/
+*.spec
+*.zip
