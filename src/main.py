@@ -11,21 +11,15 @@ from gui.main_window import FileOrganizerWindow  # Update import path
 # Load environment variables
 load_dotenv()
 
-# Setup logging with file output
-log_file = os.path.join(os.path.dirname(__file__), '..',
-                        'logs', 'file_organizer.log')
-os.makedirs(os.path.dirname(log_file), exist_ok=True)
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
 
-logging.basicConfig(
-    level=Config.LOG_LEVEL,
-    format=Config.LOG_FORMAT,
-    datefmt=Config.DATE_FMT,
-    handlers=[
-        logging.FileHandler(log_file, encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger(__name__)
+    return os.path.join(base_path, relative_path)
 
 # Get paths from environment variables
 SOURCE_FOLDER = os.getenv('SOURCE_FOLDER')
@@ -60,8 +54,21 @@ def create_config() -> OrganizerConfig:
 
 def main() -> None:
     """Main entry point of the application."""
+    # Setup logging
+    log_file = resource_path('logs/file_organizer.log')
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s | %(message)s',
+        handlers=[
+            logging.FileHandler(log_file, encoding='utf-8'),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
     logger = logging.getLogger(__name__)
-    
+
+    # Create and show GUI
     app = QApplication(sys.argv)
     window = FileOrganizerWindow(logger)
     window.show()
