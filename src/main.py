@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from utils.file_utils import organize_files_by_type
 from utils.file_types import FILE_TYPES
 from config import OrganizerConfig, Config
+from PySide6.QtWidgets import QApplication
+from gui import FileOrganizerGUI
 
 # Load environment variables
 load_dotenv()
@@ -29,6 +31,8 @@ logger = logging.getLogger(__name__)
 SOURCE_FOLDER = os.getenv('SOURCE_FOLDER')
 ORGANIZED_FOLDER = os.getenv('ORGANIZED_FOLDER')
 UNORGANIZED_FOLDER = os.getenv('UNORGANIZED_FOLDER')
+USE_CREATION_DATE = os.getenv('USE_CREATION_DATE')
+FORCE_DATE = os.getenv('FORCE_DATE')
 
 # Add debug output to verify paths
 if os.getenv('DEBUG') == 'True':
@@ -49,22 +53,17 @@ def create_config() -> OrganizerConfig:
         unorganized_folder=UNORGANIZED_FOLDER,
         file_types=FILE_TYPES,
         logger=logger,
-        use_creation_date=False,
-        force_date=False
+        use_creation_date=USE_CREATION_DATE,
+        force_date=FORCE_DATE
     )
 
 
 def main() -> None:
     """Main entry point of the application."""
-    load_dotenv()
-
-    config = create_config()
-
-    try:
-        organize_files_by_type(config)
-    except Exception as e:
-        logger.error(f"Error during file organization: {e}")
-        sys.exit(1)
+    app = QApplication(sys.argv)
+    window = FileOrganizerGUI(logger)  # Pass logger from main
+    window.show()
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":
