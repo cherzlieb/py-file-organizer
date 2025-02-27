@@ -80,7 +80,7 @@ Um dieses Projekt ausführen zu können, benötigen Sie Python auf Ihrem Compute
     cp .env.example .env
     ```
 
-2. Passen Sie die Pfade in der [.env](http://_vscodecontentref_/12) Datei an:
+2. Passen Sie die Pfade in der `.env` Datei an:
 
     ```ini
     SOURCE_FOLDER = ""      # Hier den Pfad angeben, welcher sortiert werden soll.
