@@ -1,7 +1,7 @@
 FILE_TYPES = {
     'images': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff', '.raw', '.ico', '.psd', '.ai', '.eps'],
     'music': ['.mp3', '.wav', '.aac', '.flac', '.m4a', '.wma', '.ogg', '.mid', '.midi'],
-    'documents': ['.pdf', '.docx', '.txt', '.pptx', '.xlsx', '.html', '.tex', '.doc', '.rtf', '.odt', '.md', '.epub', '.mobi'],
+    'documents': ['.pdf', '.docx', '.txt', '.pptx', '.html', '.tex', '.doc', '.rtf', '.odt', '.md', '.epub', '.mobi'],
     'videos': ['.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm', '.m4v', '.mpg', '.mpeg', '.3gp'],
     'archives': ['.zip', '.tar', '.gz', '.rar', '.7z', '.bz2', '.xz', '.iso', '.tgz'],
     '3d-prints': ['.3mf', '.stl', '.obj', '.gcode', '.amf'],
