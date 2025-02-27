@@ -3,7 +3,7 @@ FILE_TYPES = {
     'music': ['.mp3', '.wav', '.aac', '.flac', '.m4a', '.wma', '.ogg', '.mid', '.midi'],
     'documents': ['.pdf', '.docx', '.txt', '.pptx', '.xlsx', '.html', '.tex', '.doc', '.rtf', '.odt', '.md', '.epub', '.mobi'],
     'videos': ['.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm', '.m4v', '.mpg', '.mpeg', '.3gp'],
-    'archives': ['.zip', '.tar', '.gz', '.rar', '.7z', '.bz2', '.xz', '.iso'],
+    'archives': ['.zip', '.tar', '.gz', '.rar', '.7z', '.bz2', '.xz', '.iso', '.tgz'],
     '3d-prints': ['.3mf', '.stl', '.obj', '.gcode', '.amf'],
     'executables': ['.exe', '.msi', '.bat', '.cmd', '.ps1', '.sh'],
     'vs-extensions': ['.vsix'],
@@ -23,5 +23,8 @@ FILE_TYPES = {
     'subtitles': ['.srt', '.sub', '.ass', '.vtt'],
     'torrents': ['.torrent'],
     'backups': ['.bak', '.backup'],
-    'certificates': ['.crt', '.cer', '.key', '.pem']
+    'certificates': ['.crt', '.cer', '.key', '.pem'],
+    'export-lib': ['.exp'],
+    'codesys-lib': ['.library'],
+    'bin-files': ['.bin'],
 }
