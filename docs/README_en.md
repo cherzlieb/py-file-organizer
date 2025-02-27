@@ -74,13 +74,13 @@ To run this project, you need Python installed on your computer. Additional depe
 
 ## Configuration
 
-1. Copy the [.env.example](http://_vscodecontentref_/26) file to [.env](http://_vscodecontentref_/27):
+1. Copy the `.env.example` file to `.env`:
 
     ```bash
     cp .env.example .env
     ```
 
-2. Adjust the paths in the [.env](http://_vscodecontentref_/28) file:
+2. Adjust the paths in the `.env` file:
 
     ```ini
     SOURCE_FOLDER = ""      # Specify the path to be sorted.
