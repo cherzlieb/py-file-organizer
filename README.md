@@ -6,5 +6,5 @@ This project is a simple Python application that automatically sorts files in yo
 
 ## Sprachen / Languages
 
--   [Deutsch (German)](docs\README_de.md)
--   [English (Englisch)](docs\README_en.md)
+-   [Deutsch (German)](docs/README_de.md)
+-   [English (Englisch)](docs/README_en.md)
