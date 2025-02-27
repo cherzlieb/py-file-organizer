@@ -48,13 +48,13 @@ def is_valid_date_prefix(filename: str) -> Tuple[bool, Optional[datetime]]:
     """
     try:
         date_part = filename[:10]
-        date_obj = datetime.strptime(date_part, "%Y-%M-%d")
+        date_obj = datetime.strptime(date_part, "%Y-%m-%d")
         return filename[10] == '-', date_obj
     except (ValueError, IndexError):
         return False, None
 
 class OrganizerConfig:
-    def __init__(self, source_folder: str, organized_folder: str, unorganized_folder: str, file_types: Dict[str, List[str]], logger: logging.Logger, use_creation_date: bool = False, force_date: bool = False):
+    def __init__(self, source_folder: str, organized_folder: str, unorganized_folder: str, file_types: Dict[str, List[str]], logger: logging.Logger, use_creation_date: bool = False, force_date: bool = False, date_folders: bool = False):
         self.source_folder = source_folder
         self.organized_folder = organized_folder
         self.unorganized_folder = unorganized_folder
@@ -62,6 +62,7 @@ class OrganizerConfig:
         self.logger = logger
         self.use_creation_date = use_creation_date
         self.force_date = force_date
+        self.date_folders = date_folders
 
 def organize_files_by_type(config: OrganizerConfig) -> None:
     """Main organization function with high-level logic."""
@@ -96,8 +97,18 @@ def process_directory(config: OrganizerConfig) -> Tuple[int, int]:
 def process_file(item_path: str, item_name: str, config: OrganizerConfig) -> int:
     """Process a single file."""
     try:
+        # Get file date
         file_date = get_file_date(item_path, config.use_creation_date)
-        new_filename = FilenameProcessor.create_dated_filename(item_name, file_date)
+        
+        # Check if filename already has a valid date prefix
+        has_valid_date, existing_date = FilenameProcessor.parse_date_prefix(item_name)
+        
+        if has_valid_date and not config.force_date:
+            # Keep original name if date is valid and force_date is False
+            new_filename = item_name
+        else:
+            # Create new filename with date prefix
+            new_filename = FilenameProcessor.create_dated_filename(item_name, file_date)
         
         # Get file extension and determine destination
         file_extension = os.path.splitext(item_name)[1].lower()
@@ -122,7 +133,15 @@ def process_file(item_path: str, item_name: str, config: OrganizerConfig) -> int
 def process_folder(item_path: str, item_name: str, config: OrganizerConfig) -> int:
     """Process a single folder."""
     try:
-        destination_path = os.path.join(config.unorganized_folder, item_name)
+        if config.date_folders:
+            # Get folder date and create new name with date prefix
+            folder_date = get_file_date(item_path, config.use_creation_date)
+            new_foldername = FilenameProcessor.create_dated_filename(item_name, folder_date)
+            destination_path = os.path.join(config.unorganized_folder, new_foldername)
+        else:
+            # Use original folder name
+            destination_path = os.path.join(config.unorganized_folder, item_name)
+            
         config.logger.info(f"Moving folder: {item_name} -> {config.unorganized_folder}")
         
         if move_file(item_path, destination_path, config.logger):
