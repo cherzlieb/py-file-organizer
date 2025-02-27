@@ -20,3 +20,4 @@ class OrganizerConfig:
     logger: logging.Logger
     use_creation_date: bool = False
     force_date: bool = False
+    date_folders: bool = False  # New setting
