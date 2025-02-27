@@ -11,6 +11,8 @@ def create_release():
         root_dir = Path(__file__).parent.parent
         release_dir = root_dir / "Release"
         dist_dir = root_dir / "dist"
+        version = "v1.0.0"
+        zip_name = f"FileOrganizer-{version}"
         
         print(f"Creating release in: {release_dir}")
         
@@ -65,17 +67,26 @@ def create_release():
 Bei Problemen besuchen Sie / For issues visit:
 https://github.com/cherzlieb/py-file-organizer""")
             
-            # Create ZIP file
-            zip_name = "FileOrganizer-v1.0.0"
-            zip_path = root_dir / f"{zip_name}.zip"
+            # Create ZIP file in Release directory
+            zip_path = release_dir / f"{zip_name}.zip"
             print(f"Creating ZIP file: {zip_path}")
             
-            # Remove existing ZIP file
-            if zip_path.exists():
-                os.remove(zip_path)
+            # Create archive of all files in release_dir
+            release_files_dir = release_dir / "files"
             
-            # Create new ZIP file
-            shutil.make_archive(str(root_dir / zip_name), 'zip', release_dir)
+            # Move all release files to a subdirectory
+            if release_files_dir.exists():
+                shutil.rmtree(release_files_dir)
+            release_files_dir.mkdir()
+            
+            # Move all files except the zip to the files directory
+            for item in release_dir.iterdir():
+                if item != release_files_dir and item != zip_path:
+                    shutil.move(str(item), str(release_files_dir))
+            
+            # Create ZIP from files directory
+            shutil.make_archive(str(release_dir / zip_name), 'zip', release_files_dir)
+            
             print("Release package created successfully!")
             
         else:
