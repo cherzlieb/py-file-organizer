@@ -60,8 +60,12 @@ def create_config() -> OrganizerConfig:
 
 def main() -> None:
     """Main entry point of the application."""
+    # Create basic logger
+    logger = logging.getLogger(__name__)
+    logger.addHandler(logging.NullHandler())
+    
     app = QApplication(sys.argv)
-    window = FileOrganizerGUI(logger)  # Pass logger from main
+    window = FileOrganizerGUI(logger)
     window.show()
     sys.exit(app.exec())
 
