@@ -4,9 +4,9 @@ import logging
 from dotenv import load_dotenv
 from utils.file_utils import organize_files_by_type
 from utils.file_types import FILE_TYPES
-from config import OrganizerConfig, Config
+from core.config import OrganizerConfig, Config
 from PySide6.QtWidgets import QApplication
-from gui import FileOrganizerGUI
+from gui.main_window import FileOrganizerWindow  # Update import path
 
 # Load environment variables
 load_dotenv()
@@ -60,12 +60,10 @@ def create_config() -> OrganizerConfig:
 
 def main() -> None:
     """Main entry point of the application."""
-    # Create basic logger
     logger = logging.getLogger(__name__)
-    logger.addHandler(logging.NullHandler())
     
     app = QApplication(sys.argv)
-    window = FileOrganizerGUI(logger)
+    window = FileOrganizerWindow(logger)
     window.show()
     sys.exit(app.exec())
 
