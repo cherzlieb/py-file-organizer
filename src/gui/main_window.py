@@ -27,23 +27,23 @@ class FileOrganizerWindow(QMainWindow):
         self.main_layout = QVBoxLayout(central_widget)
 
         # Load initial configuration and set language BEFORE creating UI components
-        # config = ConfigHandler.load_config()
-        # initial_language = config.get('LANGUAGE', 'en')
+        config = ConfigHandler.load_config()
+        initial_language = config.get('LANGUAGE', 'en')
 
         # Setup initial translation
-        # translator = Translation.setup_language(initial_language)
-        # translator.install()
+        translator = Translation.setup_language(initial_language)
+        translator.install()
 
         # Force update of gettext function
-        # import builtins
-        # builtins.__dict__['_'] = translator.gettext
+        import builtins
+        builtins.__dict__['_'] = translator.gettext
 
         # Update global _ in current module
-        # global _
-        # _ = translator.gettext
+        global _
+        _ = translator.gettext
 
         # Create and setup UI components with translations
-        # self.setup_language_selection()
+        self.setup_language_selection()
         self.setup_folder_entries()
         self.setup_checkboxes()
         self.setup_log_path()
@@ -99,32 +99,32 @@ class FileOrganizerWindow(QMainWindow):
         self.main_layout.addWidget(self.log_widget)
         self.debug_cb.stateChanged.connect(self.toggle_log_path)
 
-    # def setup_language_selection(self):
-    #     """Setup language selection dropdown."""
-    #     language_container = QWidget()
-    #     language_layout = QHBoxLayout(language_container)
+    def setup_language_selection(self):
+        """Setup language selection dropdown."""
+        language_container = QWidget()
+        language_layout = QHBoxLayout(language_container)
 
-    #     # Create label and store reference
-    #     self.language_label = QLabel(_("Language:"))  # Store reference
-    #     self.language_combo = QComboBox()
+        # Create label and store reference
+        self.language_label = QLabel(_("Language:"))  # Store reference
+        self.language_combo = QComboBox()
 
-    #     # Add available languages
-    #     for code, name in Translation.get_language_names().items():
-    #         self.language_combo.addItem(name, code)
+        # Add available languages
+        for code, name in Translation.get_language_names().items():
+            self.language_combo.addItem(name, code)
 
-    #     # Set current language from config
-    #     current_language = ConfigHandler.load_config().get('LANGUAGE', 'en')
-    #     index = self.language_combo.findData(current_language)
-    #     if index >= 0:
-    #         self.language_combo.setCurrentIndex(index)
+        # Set current language from config
+        current_language = ConfigHandler.load_config().get('LANGUAGE', 'en')
+        index = self.language_combo.findData(current_language)
+        if index >= 0:
+            self.language_combo.setCurrentIndex(index)
 
-    #     # Connect signal for language change
-    #     self.language_combo.currentIndexChanged.connect(self.change_language)
+        # Connect signal for language change
+        self.language_combo.currentIndexChanged.connect(self.change_language)
 
-    #     language_layout.addWidget(self.language_label)  # Use stored reference
-    #     language_layout.addWidget(self.language_combo)
+        language_layout.addWidget(self.language_label)  # Use stored reference
+        language_layout.addWidget(self.language_combo)
 
-    #     self.main_layout.addWidget(language_container)
+        self.main_layout.addWidget(language_container)
 
     def setup_buttons(self):
         """Setup action buttons."""
@@ -180,7 +180,7 @@ class FileOrganizerWindow(QMainWindow):
             'FORCE_DATE': str(self.force_date_cb.isChecked()),
             'DATE_FOLDERS': str(self.date_folders_cb.isChecked()),
             'LOG_FILE': "logs/file_organizer.log",
-            # 'LANGUAGE': self.language_combo.currentData()  # Save current language
+            'LANGUAGE': self.language_combo.currentData()  # Save current language
         }
 
         ConfigHandler.save_config(config)
@@ -242,31 +242,31 @@ class FileOrganizerWindow(QMainWindow):
             QMessageBox.critical(
                 self, "Error", f"Error during file organization: {str(e)}")
 
-    # def change_language(self):
-    #     """Change application language."""
-    #     language_code = self.language_combo.currentData()
+    def change_language(self):
+        """Change application language."""
+        language_code = self.language_combo.currentData()
 
-    #     # Setup translation
-    #     translator = Translation.setup_language(language_code)
+        # Setup translation
+        translator = Translation.setup_language(language_code)
 
-    #     # Force update of gettext function
-    #     import builtins
-    #     builtins.__dict__['_'] = translator.gettext
+        # Force update of gettext function
+        import builtins
+        builtins.__dict__['_'] = translator.gettext
 
-    #     # Update global _ in current module
-    #     global _
-    #     _ = translator.gettext
+        # Update global _ in current module
+        global _
+        _ = translator.gettext
 
-    #     # Test translation immediately
-    #     test_text = _("File Organizer")
+        # Test translation immediately
+        test_text = _("File Organizer")
 
-    #     # Update UI
-    #     self.retranslate_ui()
+        # Update UI
+        self.retranslate_ui()
 
-    #     # Save config
-    #     config = ConfigHandler.load_config()
-    #     config['LANGUAGE'] = language_code
-    #     ConfigHandler.save_config(config)
+        # Save config
+        config = ConfigHandler.load_config()
+        config['LANGUAGE'] = language_code
+        ConfigHandler.save_config(config)
 
     def retranslate_ui(self):
         """Update all UI texts with new language."""
@@ -274,7 +274,7 @@ class FileOrganizerWindow(QMainWindow):
         self.setWindowTitle(_("File Organizer"))
 
         # Update language selector using stored reference
-        # self.language_label.setText(_("Language:"))
+        self.language_label.setText(_("Language:"))
 
         # Update folder entries
         for key, entry in self.folder_entries.items():
