@@ -13,7 +13,7 @@ This guide explains how to create and deploy releases of the File Organizer.
 1. Prepare environment / Umgebung vorbereiten:
 ```bash
 # Activate virtual environment / Virtuelle Umgebung aktivieren
-.\venv\Scripts\activate
+.venv\Scripts\activate
 
 # Install dependencies / Abhängigkeiten installieren
 pip install -r requirements.txt
@@ -25,13 +25,14 @@ python scripts/create_release.py
 ```
 
 The script will create / Das Skript erstellt:
-- `FileOrganizer-v1.0.0.zip` in the root directory / im Hauptverzeichnis
+- `FileOrganizer-v<Versionnumber>.zip` in the release directory / im Releaseverzeichnis
 - Release files in the `Release` folder / Release-Dateien im `Release`-Ordner
 
 ## Directory Structure / Verzeichnisstruktur
 
 ```
 Release/
+├── FileOrganizer-v<Versionnumber>.zip
 ├── FileOrganizer.exe
 ├── config/
 │   └── .env
