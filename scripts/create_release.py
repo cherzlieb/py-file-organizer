@@ -8,6 +8,11 @@ from pathlib import Path
 def create_release():
     """Create a release package."""
     try:
+        # Compile translations
+        compile_script = Path(__file__).parent / "compile_translations.py"
+        print(f"Compiling translations using: {compile_script}")
+        subprocess.run([sys.executable, str(compile_script)], check=True)
+
         # Setup paths
         root_dir = Path(__file__).parent.parent
         release_dir = root_dir / "Release"
