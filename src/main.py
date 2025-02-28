@@ -11,6 +11,7 @@ from gui.main_window import FileOrganizerWindow  # Update import path
 # Load environment variables
 load_dotenv()
 
+
 def resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
     try:
@@ -20,6 +21,21 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+
+# Setup logging
+log_file = resource_path('logs/file_organizer.log')
+os.makedirs(os.path.dirname(log_file), exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s | %(message)s',
+    handlers=[
+        logging.FileHandler(log_file, encoding='utf-8'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
 
 # Get paths from environment variables
 SOURCE_FOLDER = os.getenv('SOURCE_FOLDER')
@@ -35,8 +51,8 @@ if os.getenv('DEBUG') == 'True':
     logger.debug(f"Unorganized folder path: {UNORGANIZED_FOLDER}")
 
 # Check if source folder exists
-if not os.path.exists(SOURCE_FOLDER):
-    logger.warning(f"Source folder not found at {SOURCE_FOLDER}")
+if not SOURCE_FOLDER or not os.path.exists(SOURCE_FOLDER):
+    logger.warning(f"Source folder not found or not set: {SOURCE_FOLDER}")
 
 
 def create_config() -> OrganizerConfig:
@@ -54,20 +70,6 @@ def create_config() -> OrganizerConfig:
 
 def main() -> None:
     """Main entry point of the application."""
-    # Setup logging
-    log_file = resource_path('logs/file_organizer.log')
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s | %(message)s',
-        handlers=[
-            logging.FileHandler(log_file, encoding='utf-8'),
-            logging.StreamHandler(sys.stdout)
-        ]
-    )
-    logger = logging.getLogger(__name__)
-
     # Create and show GUI
     app = QApplication(sys.argv)
     window = FileOrganizerWindow(logger)
