@@ -20,12 +20,14 @@ src/
 ## Creating New Translations / Neue Übersetzungen erstellen
 
 1. Create a new `.po` file / Neue `.po` Datei erstellen:
+
 ```bash
 mkdir -p src/locales/<language_code>/LC_MESSAGES
 touch src/locales/<language_code>/LC_MESSAGES/messages.po
 ```
 
 2. Add header information / Header-Informationen hinzufügen:
+
 ```po
 msgid ""
 msgstr ""
@@ -41,6 +43,7 @@ msgstr ""
 ```
 
 3. Add translations / Übersetzungen hinzufügen:
+
 ```po
 msgid "Original Text"
 msgstr "Translated Text"
@@ -49,6 +52,7 @@ msgstr "Translated Text"
 ## Compiling Translations / Übersetzungen kompilieren
 
 Run the compile script / Kompilierungsskript ausführen:
+
 ```bash
 python scripts/compile_translations.py
 ```
@@ -56,12 +60,14 @@ python scripts/compile_translations.py
 ## Adding New Strings / Neue Texte hinzufügen
 
 1. Mark strings in code / Texte im Code markieren:
+
 ```python
 from gettext import gettext as _
 text = _("Text to translate")
 ```
 
 2. Add translations to `.po` files / Übersetzungen in `.po` Dateien hinzufügen:
+
 ```po
 msgid "Text to translate"
 msgstr "Übersetzter Text"
@@ -72,12 +78,13 @@ msgstr "Übersetzter Text"
 ## Testing Translations / Übersetzungen testen
 
 Run the test script / Testskript ausführen:
+
 ```bash
 python scripts/test_translations.py
 ```
 
 ## Common Issues / Häufige Probleme
 
-- **Missing .mo files**: Run compile script / Kompilierungsskript ausführen
-- **Translation not showing**: Check if string is marked with `_()` / Prüfen ob Text mit `_()` markiert ist
-- **Wrong encoding**: Ensure UTF-8 encoding / UTF-8-Kodierung sicherstellen
+-   **Missing .mo files**: Run compile script / Kompilierungsskript ausführen
+-   **Translation not showing**: Check if string is marked with `_()` / Prüfen ob Text mit `_()` markiert ist
+-   **Wrong encoding**: Ensure UTF-8 encoding / UTF-8-Kodierung sicherstellen
