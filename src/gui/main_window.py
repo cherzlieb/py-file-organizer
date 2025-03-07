@@ -11,6 +11,7 @@ from core.translation import Translation
 from .components import FolderEntryWidget, LogPathWidget
 from .config_handler import ConfigHandler
 from gettext import gettext as _
+from .file_type_manager import FileTypeManagerDialog
 
 
 class FileOrganizerWindow(QMainWindow):
@@ -131,14 +132,14 @@ class FileOrganizerWindow(QMainWindow):
         button_container = QWidget()
         button_layout = QHBoxLayout(button_container)
 
-        # save_button = QPushButton("Save Configuration")
         start_button = QPushButton("Start Sorting")
+        file_types_button = QPushButton("Manage File Types")  # Add this button
 
-        # save_button.clicked.connect(self.save_config)
         start_button.clicked.connect(self.start_sorting)
+        file_types_button.clicked.connect(self.open_file_type_manager)  # Add this connection
 
-        # button_layout.addWidget(save_button)
         button_layout.addWidget(start_button)
+        button_layout.addWidget(file_types_button)  # Add this button
 
         self.main_layout.addWidget(button_container)
 
@@ -303,3 +304,10 @@ class FileOrganizerWindow(QMainWindow):
                 button.setText(_("Save Configuration"))
             elif button.text() == "Start Sorting":
                 button.setText(_("Start Sorting"))
+            elif button.text() == "Manage File Types":
+                button.setText(_("Manage File Types"))
+
+    def open_file_type_manager(self):
+        """Open the file type manager dialog."""
+        dialog = FileTypeManagerDialog(self)
+        dialog.exec()

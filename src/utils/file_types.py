@@ -1,3 +1,6 @@
+from core.database import DatabaseManager
+
+# Define default file types
 FILE_TYPES = {
     'images': ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.tiff', '.raw', '.ico', '.psd', '.ai', '.eps'],
     'music': ['.mp3', '.wav', '.aac', '.flac', '.m4a', '.wma', '.ogg', '.mid', '.midi'],
@@ -28,3 +31,18 @@ FILE_TYPES = {
     'codesys-lib': ['.library'],
     'bin-files': ['.bin'],
 }
+
+def get_file_types():
+    """Get file types from database or default if database access fails."""
+    try:
+        db_manager = DatabaseManager()
+        db_manager.initialize_database()
+
+        # Populate default file types if database is empty
+        db_manager.populate_default_file_types(FILE_TYPES)
+
+        # Return file types from database
+        return db_manager.get_file_types()
+    except Exception as e:
+        # Fallback to default file types
+        return FILE_TYPES
