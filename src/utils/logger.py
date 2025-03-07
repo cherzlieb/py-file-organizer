@@ -3,7 +3,7 @@ import os
 import sys
 from .log_filter import ErrorOrDebugFilter
 
-# Globaler Debug-Modus für die gesamte Anwendung
+# Global debug mode for the entire application
 _debug_mode = False
 
 def configure_logging(debug_mode=False):
@@ -11,35 +11,35 @@ def configure_logging(debug_mode=False):
     global _debug_mode
     _debug_mode = debug_mode
 
-    # Standardmäßigen Logs-Ordner erstellen
+    # Create default logs folder
     log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "logs")
     log_file = os.path.join(log_dir, 'file_organizer.log')
     os.makedirs(log_dir, exist_ok=True)
 
-    # Root Logger konfigurieren
+    # Configure root logger
     root_logger = logging.getLogger()
 
-    # Alle bestehenden Handler entfernen
+    # Remove all existing handlers
     for handler in root_logger.handlers[:]:
         root_logger.removeHandler(handler)
 
-    # Log-Level setzen (immer DEBUG, aber der Filter entscheidet)
+    # Set log level (always DEBUG, but the filter decides)
     root_logger.setLevel(logging.DEBUG)
 
-    # Datei-Handler mit Filter hinzufügen
+    # Add file handler with filter
     file_handler = logging.FileHandler(log_file, encoding='utf-8')
     file_handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)s | %(message)s'))
     file_handler.addFilter(ErrorOrDebugFilter(debug_mode))
     root_logger.addHandler(file_handler)
 
-    # Console-Handler nur für Debug-Modus
+    # Console handler for debug mode only
     if debug_mode:
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)s | %(message)s'))
         console_handler.addFilter(ErrorOrDebugFilter(debug_mode))
         root_logger.addHandler(console_handler)
 
-    # Info für Debugging
+    # Info for debugging
     if debug_mode:
         logging.debug("Logging konfiguriert: Debug-Modus AKTIV")
     else:
@@ -50,17 +50,17 @@ def update_debug_mode(debug_mode):
     global _debug_mode
     _debug_mode = debug_mode
 
-    # Filter für alle bestehenden Handler aktualisieren
+    # Update filter for all existing handlers
     root_logger = logging.getLogger()
     for handler in root_logger.handlers:
-        # Alle bestehenden Filter entfernen
+        # Remove all existing filters
         for f in handler.filters[:]:
             if isinstance(f, ErrorOrDebugFilter):
                 handler.removeFilter(f)
-        # Neuen Filter hinzufügen
+        # Add new filter
         handler.addFilter(ErrorOrDebugFilter(debug_mode))
 
-    # Info für Debugging
+    # Info for debugging
     if debug_mode:
         logging.debug("Logging aktualisiert: Debug-Modus AKTIV")
     else:
