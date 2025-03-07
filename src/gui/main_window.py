@@ -6,12 +6,13 @@ import sys
 import logging
 from utils.file_utils import organize_files_by_type
 from utils.file_types import FILE_TYPES
+from utils.logger import update_debug_mode, get_logger
 from core.config import OrganizerConfig
 from core.translation import Translation
-from .components import FolderEntryWidget, LogPathWidget
+from .components import FolderEntryWidget
 from .config_handler import ConfigHandler
-from gettext import gettext as _
 from .file_type_manager import FileTypeManagerDialog
+from gettext import gettext as _
 
 
 class FileOrganizerWindow(QMainWindow):
@@ -47,7 +48,6 @@ class FileOrganizerWindow(QMainWindow):
         self.setup_language_selection()
         self.setup_folder_entries()
         self.setup_checkboxes()
-        self.setup_log_path()
         self.setup_buttons()
 
         # Add spacing at the bottom
@@ -57,11 +57,14 @@ class FileOrganizerWindow(QMainWindow):
         self.load_config()
 
         # Update UI with initial translations
-        self.retranslate_ui()  # Add this line to translate everything at startup
+        self.retranslate_ui()
 
         # Store initial window size
         self.adjustSize()
         self.default_height = self.height()
+
+        # Debug-Checkbox-Verbindung aktualisieren
+        self.debug_cb.stateChanged.connect(self.toggle_debug)
 
     def setup_folder_entries(self):
         """Setup folder entry widgets."""
@@ -92,13 +95,6 @@ class FileOrganizerWindow(QMainWindow):
             checkbox_layout.addWidget(cb)
 
         self.main_layout.addWidget(checkbox_container)
-
-    def setup_log_path(self):
-        """Setup log path widgets."""
-        self.log_widget = LogPathWidget()
-        self.log_widget.setVisible(False)
-        self.main_layout.addWidget(self.log_widget)
-        self.debug_cb.stateChanged.connect(self.toggle_log_path)
 
     def setup_language_selection(self):
         """Setup language selection dropdown."""
@@ -143,17 +139,6 @@ class FileOrganizerWindow(QMainWindow):
 
         self.main_layout.addWidget(button_container)
 
-    def toggle_log_path(self, state):
-        """Show or hide log path widgets based on debug checkbox state."""
-        is_visible = state == Qt.CheckState.Checked.value
-        self.log_widget.setVisible(is_visible)
-
-        # Adjust window size
-        if is_visible:
-            self.adjustSize()
-        else:
-            self.resize(self.width(), self.default_height)
-
     def load_config(self):
         """Load configuration from .env file."""
         config = ConfigHandler.load_config()
@@ -181,45 +166,33 @@ class FileOrganizerWindow(QMainWindow):
             'FORCE_DATE': str(self.force_date_cb.isChecked()),
             'DATE_FOLDERS': str(self.date_folders_cb.isChecked()),
             'LOG_FILE': "logs/file_organizer.log",
-            'LANGUAGE': self.language_combo.currentData()  # Save current language
+            'LANGUAGE': self.language_combo.currentData()
         }
 
         ConfigHandler.save_config(config)
 
+    def toggle_debug(self):
+        """Debug-Modus ändern und Logging aktualisieren."""
+        debug_mode = self.debug_cb.isChecked()
+        update_debug_mode(debug_mode)
+
+        # Config speichern
+        self.save_config()
+
     def start_sorting(self):
         """Start the file organization process."""
         try:
-            # Setup logging if debug is enabled
-            if self.debug_cb.isChecked():
-                log_folder = self.log_widget.entry.text()
-                if not log_folder:
-                    QMessageBox.warning(
-                        self, "Warning", "Please select a log file location")
-                    return
+            # Debug-Modus aktualisieren
+            debug_mode = self.debug_cb.isChecked()
+            update_debug_mode(debug_mode)
 
-                log_file = os.path.join(log_folder, 'file_organizer.log')
-                os.makedirs(os.path.dirname(log_file), exist_ok=True)
-
-                # Configure logging
-                file_handler = logging.FileHandler(log_file, encoding='utf-8')
-                console_handler = logging.StreamHandler(sys.stdout)
-
-                self.logger.handlers = []
-                self.logger.addHandler(file_handler)
-                self.logger.addHandler(console_handler)
-                self.logger.setLevel(logging.DEBUG)
-            else:
-                self.logger.handlers = []
-                self.logger.addHandler(logging.NullHandler())
-                self.logger.setLevel(logging.WARNING)
+            # Informationslog schreiben
+            self.logger.debug("Starting file organization process")
 
             config = OrganizerConfig(
-                source_folder=self.folder_entries['SOURCE_FOLDER'].entry.text(
-                ),
-                organized_folder=self.folder_entries['ORGANIZED_FOLDER'].entry.text(
-                ),
-                unorganized_folder=self.folder_entries['UNORGANIZED_FOLDER'].entry.text(
-                ),
+                source_folder=self.folder_entries['SOURCE_FOLDER'].entry.text(),
+                organized_folder=self.folder_entries['ORGANIZED_FOLDER'].entry.text(),
+                unorganized_folder=self.folder_entries['UNORGANIZED_FOLDER'].entry.text(),
                 file_types=FILE_TYPES,
                 logger=self.logger,
                 use_creation_date=self.creation_date_cb.isChecked(),
@@ -229,19 +202,22 @@ class FileOrganizerWindow(QMainWindow):
 
             # Check if source folder exists
             if not os.path.exists(config.source_folder):
-                QMessageBox.warning(
-                    self, "Error", f"Source folder not found: {config.source_folder}")
+                error_msg = f"Source folder not found: {config.source_folder}"
+                self.logger.error(error_msg)
+                QMessageBox.warning(self, "Error", _(error_msg))
                 return
 
             # Start organization process
             organize_files_by_type(config)
 
-            QMessageBox.information(
-                self, "Success", "File organization completed successfully!")
+            success_msg = "File organization completed successfully!"
+            self.logger.debug(success_msg)
+            QMessageBox.information(self, "Success", _(success_msg))
 
         except Exception as e:
-            QMessageBox.critical(
-                self, "Error", f"Error during file organization: {str(e)}")
+            error_msg = f"Error during file organization: {str(e)}"
+            self.logger.error(error_msg)
+            QMessageBox.critical(self, "Error", _(error_msg))
 
     def change_language(self):
         """Change application language."""
@@ -292,11 +268,6 @@ class FileOrganizerWindow(QMainWindow):
         self.creation_date_cb.setText(_("Use Creation Date"))
         self.force_date_cb.setText(_("Force Date"))
         self.date_folders_cb.setText(_("Add Date to Folders"))
-
-        # Update log widget
-        if self.log_widget:
-            self.log_widget.label.setText(_("Log File Location:"))
-            self.log_widget.browse_btn.setText(_("Browse"))
 
         # Update buttons
         for button in self.findChildren(QPushButton):

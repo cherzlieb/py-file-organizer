@@ -3,6 +3,7 @@ import sqlite3
 import logging
 from typing import Dict, List, Any, Optional
 from pathlib import Path
+from utils.logger import get_logger
 
 class DatabaseManager:
     """Manages database operations for configuration and file types."""
@@ -20,7 +21,7 @@ class DatabaseManager:
             self.db_path = os.path.join(app_dir, self.DB_FILE)
 
         self.conn = None
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger(__name__)
 
     def connect(self) -> None:
         """Connect to the database."""
@@ -61,7 +62,7 @@ class DatabaseManager:
             ''')
 
             self.conn.commit()
-            self.logger.info("Database initialized successfully")
+            self.logger.debug("Database initialized successfully")
         except sqlite3.Error as e:
             self.logger.error(f"Database initialization error: {e}")
             raise
@@ -85,7 +86,7 @@ class DatabaseManager:
                         (key, value)
                     )
                 self.conn.commit()
-                self.logger.info("Default configuration populated")
+                self.logger.debug("Default configuration populated")
         except sqlite3.Error as e:
             self.logger.error(f"Error populating default config: {e}")
             raise
@@ -110,7 +111,7 @@ class DatabaseManager:
                             (folder_name, ext)
                         )
                 self.conn.commit()
-                self.logger.info("Default file types populated")
+                self.logger.debug("Default file types populated")
         except sqlite3.Error as e:
             self.logger.error(f"Error populating default file types: {e}")
             raise
@@ -142,7 +143,7 @@ class DatabaseManager:
                     (key, str(value))
                 )
             self.conn.commit()
-            self.logger.info("Configuration updated")
+            self.logger.debug("Configuration updated")
         except sqlite3.Error as e:
             self.logger.error(f"Error updating configuration: {e}")
             raise

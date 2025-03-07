@@ -2,25 +2,16 @@ import sys
 import os
 import logging
 from utils.file_utils import organize_files_by_type
+from utils.logger import configure_logging, get_logger
 from core.config import OrganizerConfig, Config
 from core.database import DatabaseManager
 from utils.file_types import get_file_types
 from gui.main_window import FileOrganizerWindow
 from PySide6.QtWidgets import QApplication
 
-# Setup logging
-log_file = 'logs/file_organizer.log'
-os.makedirs(os.path.dirname(log_file), exist_ok=True)
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s | %(message)s',
-    handlers=[
-        logging.FileHandler(log_file, encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger(__name__)
+# Logger zentral konfigurieren - initial nur ERROR-Level
+configure_logging(debug_mode=False)
+logger = get_logger(__name__)
 
 def resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
@@ -37,7 +28,7 @@ def initialize_database():
     try:
         db_manager = DatabaseManager()
         db_manager.initialize_database()
-        logger.info("Database initialized")
+        logger.debug("Database initialized")
     except Exception as e:
         logger.error(f"Database initialization error: {e}")
 
