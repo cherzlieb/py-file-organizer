@@ -96,3 +96,96 @@ msgstr "Folder Management"
 
 msgid "Extensions Management"
 msgstr "Extensions Management"
+
+msgid "File Type Manager"
+msgstr "File Type Manager"
+
+msgid "<b>Folder Management</b>"
+msgstr "<b>Folder Management</b>"
+
+msgid "<b>Extensions Management</b>"
+msgstr "<b>Extensions Management</b>"
+
+msgid "Folder:"
+msgstr "Folder:"
+
+msgid "New extension (e.g. .pdf)"
+msgstr "New extension (e.g. .pdf)"
+
+msgid "Please select or enter a folder name"
+msgstr "Please select or enter a folder name"
+
+msgid "Please enter an extension"
+msgstr "Please enter an extension"
+
+msgid "Failed to add extension {}"
+msgstr "Failed to add extension {}"
+
+msgid "Please select an extension to remove"
+msgstr "Please select an extension to remove"
+
+msgid "This is the last extension for folder '{}'. Remove the folder completely?"
+msgstr "This is the last extension for folder '{}'. Remove the folder completely?"
+
+msgid "Failed to remove extension {}"
+msgstr "Failed to remove extension {}"
+
+msgid "Enter folder name:"
+msgstr "Enter folder name:"
+
+msgid "Add Extension"
+msgstr "Add Extension"
+
+msgid "Enter first extension for folder '{}':"
+msgstr "Enter first extension for folder '{}':"
+
+msgid "Failed to create folder {}"
+msgstr "Failed to create folder {}"
+
+msgid "Please select a folder to rename"
+msgstr "Please select a folder to rename"
+
+msgid "Rename Folder"
+msgstr "Rename Folder"
+
+msgid "Enter new folder name:"
+msgstr "Enter new folder name:"
+
+msgid "Confirm Merge"
+msgstr "Confirm Merge"
+
+msgid "Folder '{}' already exists. Merge extensions from '{}'?"
+msgstr "Folder '{}' already exists. Merge extensions from '{}'?"
+
+msgid "Failed to rename folder {}"
+msgstr "Failed to rename folder {}"
+
+msgid "Please select a folder to delete"
+msgstr "Please select a folder to delete"
+
+msgid "Confirm Deletion"
+msgstr "Confirm Deletion"
+
+msgid "Delete folder '{}' and all its extensions?"
+msgstr "Delete folder '{}' and all its extensions?"
+
+msgid "Failed to delete folder {}"
+msgstr "Failed to delete folder {}"
+
+msgid "Confirm Folder Deletion"
+msgstr "Confirm Folder Deletion"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Manage File Types"
+msgstr "Manage File Types"
+
+msgid "No"
+msgstr "No"
+
+msgid "Yes"
+msgstr "Yes"

@@ -96,3 +96,106 @@ msgstr "Ordnerverwaltung"
 
 msgid "Extensions Management"
 msgstr "Erweiterungsverwaltung"
+
+msgid "File Type Manager"
+msgstr "Dateitypen-Manager"
+
+msgid "<b>Folder Management</b>"
+msgstr "<b>Ordnerverwaltung</b>"
+
+msgid "<b>Extensions Management</b>"
+msgstr "<b>Erweiterungsverwaltung</b>"
+
+msgid "Folder:"
+msgstr "Ordner:"
+
+msgid "New extension (e.g. .pdf)"
+msgstr "Neue Erweiterung (z.B. .pdf)"
+
+msgid "Please select or enter a folder name"
+msgstr "Bitte wählen oder geben Sie einen Ordnernamen ein"
+
+msgid "Please enter an extension"
+msgstr "Bitte geben Sie eine Erweiterung ein"
+
+msgid "Failed to add extension {}"
+msgstr "Erweiterung {} konnte nicht hinzugefügt werden"
+
+msgid "Please select an extension to remove"
+msgstr "Bitte wählen Sie eine zu entfernende Erweiterung aus"
+
+msgid "This is the last extension for folder '{}'. Remove the folder completely?"
+msgstr "Dies ist die letzte Erweiterung für Ordner '{}'. Ordner komplett entfernen?"
+
+msgid "Failed to remove extension {}"
+msgstr "Erweiterung {} konnte nicht entfernt werden"
+
+msgid "New Folder"
+msgstr "Neuer Ordner"
+
+msgid "Enter folder name:"
+msgstr "Ordnernamen eingeben:"
+
+msgid "Add Extension"
+msgstr "Erweiterung hinzufügen"
+
+msgid "Enter first extension for folder '{}':"
+msgstr "Erste Erweiterung für Ordner '{}' eingeben:"
+
+msgid "Failed to create folder {}"
+msgstr "Ordner {} konnte nicht erstellt werden"
+
+msgid "Please select a folder to rename"
+msgstr "Bitte wählen Sie einen Ordner zum Umbenennen aus"
+
+msgid "Rename Folder"
+msgstr "Ordner umbenennen"
+
+msgid "Enter new folder name:"
+msgstr "Neuen Ordnernamen eingeben:"
+
+msgid "Confirm Merge"
+msgstr "Zusammenführung bestätigen"
+
+msgid "Folder '{}' already exists. Merge extensions from '{}'?"
+msgstr "Ordner '{}' existiert bereits. Erweiterungen aus '{}' zusammenführen?"
+
+msgid "Failed to rename folder {}"
+msgstr "Ordner {} konnte nicht umbenannt werden"
+
+msgid "Please select a folder to delete"
+msgstr "Bitte wählen Sie einen zu löschenden Ordner aus"
+
+msgid "Confirm Deletion"
+msgstr "Löschen bestätigen"
+
+msgid "Delete folder '{}' and all its extensions?"
+msgstr "Ordner '{}' und alle seine Erweiterungen löschen?"
+
+msgid "Failed to delete folder {}"
+msgstr "Ordner {} konnte nicht gelöscht werden"
+
+# Standard dialog buttons
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "Warning"
+msgstr "Warnung"
+
+msgid "Confirm Folder Deletion"
+msgstr "Bestätigen Sie die Löschung des Ordners"
+
+msgid "Manage File Types"
+msgstr "Dateitypen verwalten"
