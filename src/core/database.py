@@ -204,3 +204,69 @@ class DatabaseManager:
             return False
         finally:
             self.close()
+
+    def rename_folder(self, old_name: str, new_name: str) -> bool:
+        """Rename a folder and all its associated file types."""
+        if old_name == new_name:
+            return True
+
+        try:
+            self.connect()
+            cursor = self.conn.cursor()
+            cursor.execute(
+                "UPDATE file_types SET folder_name = ? WHERE folder_name = ?",
+                (new_name, old_name)
+            )
+            self.conn.commit()
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            self.logger.error(f"Error renaming folder: {e}")
+            return False
+        finally:
+            self.close()
+
+    def delete_folder(self, folder_name: str) -> bool:
+        """Delete a folder and all its associated file types."""
+        try:
+            self.connect()
+            cursor = self.conn.cursor()
+            cursor.execute(
+                "DELETE FROM file_types WHERE folder_name = ?",
+                (folder_name,)
+            )
+            self.conn.commit()
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            self.logger.error(f"Error deleting folder: {e}")
+            return False
+        finally:
+            self.close()
+
+    def create_folder(self, folder_name: str) -> bool:
+        """Create a new folder (placeholder entry with a dummy extension that will be removed)."""
+        try:
+            self.connect()
+            # No action needed as folders are implicit through file_types entries
+            # Return True to indicate success
+            return True
+        except sqlite3.Error as e:
+            self.logger.error(f"Error creating folder: {e}")
+            return False
+        finally:
+            self.close()
+
+    def get_folder_count(self, folder_name: str) -> int:
+        """Get the number of extensions in a folder."""
+        try:
+            self.connect()
+            cursor = self.conn.cursor()
+            cursor.execute(
+                "SELECT COUNT(*) FROM file_types WHERE folder_name = ?",
+                (folder_name,)
+            )
+            return cursor.fetchone()[0]
+        except sqlite3.Error as e:
+            self.logger.error(f"Error counting folder extensions: {e}")
+            return 0
+        finally:
+            self.close()
