@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                                QCheckBox, QPushButton, QMessageBox, QLabel, QComboBox)
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 import os
 import sys
 import logging
@@ -17,6 +17,9 @@ from gettext import gettext as _
 
 class FileOrganizerWindow(QMainWindow):
     """Main window of the File Organizer application."""
+
+    # Signal für Sprachänderung hinzufügen
+    language_changed = Signal()
 
     def __init__(self, logger):
         super().__init__()
@@ -239,6 +242,9 @@ class FileOrganizerWindow(QMainWindow):
 
         # Update UI
         self.retranslate_ui()
+
+        # Signal auslösen für alle abhängigen Widgets
+        self.language_changed.emit()
 
         # Save config
         config = ConfigHandler.load_config()
