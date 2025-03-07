@@ -3,6 +3,8 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from release_version import VersionManager
+from clear_release_by_error import main as clear_release_by_error
 
 
 def create_release():
@@ -12,13 +14,24 @@ def create_release():
         compile_script = Path(__file__).parent / "compile_translations.py"
         print(f"Compiling translations using: {compile_script}")
         subprocess.run([sys.executable, str(compile_script)], check=True)
-
+        
         # Setup paths
         root_dir = Path(__file__).parent.parent
         release_dir = root_dir / "Release"
         dist_dir = root_dir / "dist"
-        version = "v0.1.0"
-        zip_name = f"FileOrganizer-{version}"
+        version_manager = VersionManager("version.txt")
+        current_version  = version_manager.load_version()
+        
+        part = input("Was möchtest du hochzählen? (MAJOR, MINOR, PATCH, leer lassen für keine Änderung): ")
+
+        # Neue Version setzen oder behalten
+        new_version = version_manager.set_version(part if part else None)
+        if new_version != current_version:
+            version_manager.save_version(new_version)
+            
+        current_version  = version_manager.load_version()      
+        
+        zip_name = f"FileOrganizer-{current_version }"
 
         print(f"Creating release in: {release_dir}")
 
@@ -29,7 +42,6 @@ def create_release():
             shutil.rmtree(dist_dir)
 
         # Create release directory structure
-        (release_dir / "config").mkdir(parents=True)
         (release_dir / "locales/de/LC_MESSAGES").mkdir(parents=True)
         (release_dir / "locales/en/LC_MESSAGES").mkdir(parents=True)
 
@@ -96,9 +108,10 @@ https://github.com/cherzlieb/py-file-organizer""")
             print("Release package created successfully!")
 
         else:
-            print("Error: FileOrganizer.exe was not created successfully!")
+            raise Exception("Error: FileOrganizer.exe was not created successfully!")
 
-    except Exception as e:
+    except Exception as e:        
+        clear_release_by_error()
         print(f"Error creating release: {str(e)}")
         raise
 
