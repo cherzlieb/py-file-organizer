@@ -133,3 +133,5 @@ logs/
 /Release/
 *.spec
 *.zip
+
+*.db
