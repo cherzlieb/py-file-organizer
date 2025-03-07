@@ -44,10 +44,6 @@ def create_release():
             # Copy executable
             shutil.copy2(dist_dir / "FileOrganizer.exe", release_dir)
 
-            # Copy and rename .env.example to .env
-            shutil.copy2(root_dir / ".env.example",
-                         release_dir / "config" / ".env")
-
             # Copy translation files
             for lang in ['de', 'en']:
                 src_mo = root_dir / \
