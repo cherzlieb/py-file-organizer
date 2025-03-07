@@ -6,7 +6,7 @@ from utils.file_utils import organize_files_by_type
 from utils.file_types import FILE_TYPES
 from core.config import OrganizerConfig, Config
 from PySide6.QtWidgets import QApplication
-from gui.main_window import FileOrganizerWindow  # Update import path
+from gui.main_window import FileOrganizerWindow
 
 # Load environment variables
 load_dotenv()
