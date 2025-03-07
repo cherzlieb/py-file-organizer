@@ -27,23 +27,26 @@ Ausführliche Dokumentation ist verfügbar in: / Detailed documentation is avail
 ### Installation
 
 1. Repository klonen / Clone repository:
+
 ```bash
 git clone https://github.com/cherzlieb/py-file-organizer
 cd py-file-organizer
 ```
 
-2. Virtuelle Umgebung erstellen / Create virtual environment:
+1. Virtuelle Umgebung erstellen / Create virtual environment:
+
 ```bash
 # Windows
-python -m venv venv
-.\venv\Scripts\activate
+python -m venv .venv
+.\.venv\Scripts\activate
 
 # Linux/Mac
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-3. Abhängigkeiten installieren / Install dependencies:
+1. Abhängigkeiten installieren / Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -51,6 +54,7 @@ pip install -r requirements.txt
 ### Start / Launch
 
 Starten Sie die Anwendung / Launch the application:
+
 ```bash
 python src/main.py
 ```
