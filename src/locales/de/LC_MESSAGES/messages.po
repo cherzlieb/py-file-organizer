@@ -72,3 +72,27 @@ msgstr "Fehler bei der Dateisortierung: {}"
 
 msgid "Language changed successfully. Please restart the application for full effect."
 msgstr "Sprache erfolgreich geändert. Bitte starten Sie die Anwendung neu, damit alle Änderungen wirksam werden."
+
+msgid "New Folder"
+msgstr "Neuer Ordner"
+
+msgid "Rename"
+msgstr "Umbenennen"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Add"
+msgstr "Hinzufügen"
+
+msgid "Remove Selected"
+msgstr "Ausgewählte entfernen"
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Folder Management"
+msgstr "Ordnerverwaltung"
+
+msgid "Extensions Management"
+msgstr "Erweiterungsverwaltung"

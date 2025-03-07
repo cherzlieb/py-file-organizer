@@ -72,3 +72,27 @@ msgstr "Error during file organization: {}"
 
 msgid "Language changed successfully. Please restart the application for full effect."
 msgstr "Language changed successfully. Please restart the application for full effect."
+
+msgid "New Folder"
+msgstr "New Folder"
+
+msgid "Rename"
+msgstr "Rename"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Remove Selected"
+msgstr "Remove Selected"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Folder Management"
+msgstr "Folder Management"
+
+msgid "Extensions Management"
+msgstr "Extensions Management"
