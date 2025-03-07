@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
                               QListWidget, QPushButton, QComboBox, QMessageBox,
                               QInputDialog, QWidget, QSplitter, QFrame)
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from core.database import DatabaseManager
 from gettext import gettext as _
+from core.translation import Translation
 
 class FileTypeManagerDialog(QDialog):
     """Dialog for managing file types."""
@@ -18,6 +19,13 @@ class FileTypeManagerDialog(QDialog):
         self.setup_ui()
         self.load_folders()
         self.retranslate_ui()
+
+        # Verbindung zum Hauptfenster für Sprachänderungen
+        if parent:
+            try:
+                parent.language_changed.connect(self.retranslate_ui)
+            except:
+                pass
 
     def setup_ui(self):
         """Setup the dialog UI."""
@@ -131,11 +139,11 @@ class FileTypeManagerDialog(QDialog):
         extension = self.new_extension.text().strip()
 
         if not folder_name:
-            QMessageBox.warning(self, "Warning", "Please select or enter a folder name")
+            QMessageBox.warning(self, _("Warning"), _("Please select or enter a folder name"))
             return
 
         if not extension:
-            QMessageBox.warning(self, "Warning", "Please enter an extension")
+            QMessageBox.warning(self, _("Warning"), _("Please enter an extension"))
             return
 
         # Ensure extension starts with a dot
@@ -155,7 +163,7 @@ class FileTypeManagerDialog(QDialog):
             if index >= 0:
                 self.folder_combo.setCurrentIndex(index)
         else:
-            QMessageBox.warning(self, "Error", f"Failed to add extension {extension}")
+            QMessageBox.warning(self, _("Error"), _("Failed to add extension {}").format(extension))
 
         # Update button states
         self.update_button_states()
@@ -164,7 +172,7 @@ class FileTypeManagerDialog(QDialog):
         """Remove the selected extension from the current folder."""
         selected_items = self.extension_list.selectedItems()
         if not selected_items:
-            QMessageBox.warning(self, "Warning", "Please select an extension to remove")
+            QMessageBox.warning(self, _("Warning"), _("Please select an extension to remove"))
             return
 
         folder_name = self.folder_combo.currentText()
@@ -174,8 +182,8 @@ class FileTypeManagerDialog(QDialog):
         if self.db_manager.get_folder_count(folder_name) <= 1:
             reply = QMessageBox.question(
                 self,
-                "Confirm Folder Deletion",
-                f"This is the last extension for folder '{folder_name}'. Remove the folder completely?",
+                _("Confirm Folder Deletion"),
+                _("This is the last extension for folder '{}'. Remove the folder completely?").format(folder_name),
                 QMessageBox.Yes | QMessageBox.No,
                 QMessageBox.No
             )
@@ -196,23 +204,24 @@ class FileTypeManagerDialog(QDialog):
             # Update button states
             self.update_button_states()
         else:
-            QMessageBox.warning(self, "Error", f"Failed to remove extension {extension}")
+            QMessageBox.warning(self, _("Error"), _("Failed to remove extension {}").format(extension))
 
     def add_folder(self):
         """Add a new folder."""
-        folder_name, ok = QInputDialog.getText(
-            self,
-            "New Folder",
-            "Enter folder name:"
-        )
+        dialog = QInputDialog(self)
+        dialog.setWindowTitle(_("New Folder"))
+        dialog.setLabelText(_("Enter folder name:"))
+        dialog.setOkButtonText(_("OK"))
+        dialog.setCancelButtonText(_("Cancel"))
 
-        if ok and folder_name:
+        if dialog.exec() == QInputDialog.Accepted:
+            folder_name = dialog.textValue()
             # Folders are created implicitly by adding a file type
             # Show dialog to add first extension
             extension, ok = QInputDialog.getText(
                 self,
-                "Add Extension",
-                f"Enter first extension for folder '{folder_name}':"
+                _("Add Extension"),
+                _("Enter first extension for folder '{}':").format(folder_name)
             )
 
             if ok and extension:
@@ -230,20 +239,20 @@ class FileTypeManagerDialog(QDialog):
                     if index >= 0:
                         self.folder_combo.setCurrentIndex(index)
                 else:
-                    QMessageBox.warning(self, "Error", f"Failed to create folder {folder_name}")
+                    QMessageBox.warning(self, _("Error"), _("Failed to create folder {}").format(folder_name))
 
     def rename_folder(self):
         """Rename the current folder."""
         old_name = self.folder_combo.currentText()
 
         if not old_name:
-            QMessageBox.warning(self, "Warning", "Please select a folder to rename")
+            QMessageBox.warning(self, _("Warning"), _("Please select a folder to rename"))
             return
 
         new_name, ok = QInputDialog.getText(
             self,
-            "Rename Folder",
-            "Enter new folder name:",
+            _("Rename Folder"),
+            _("Enter new folder name:"),
             text=old_name
         )
 
@@ -253,8 +262,8 @@ class FileTypeManagerDialog(QDialog):
             if new_name in file_types:
                 reply = QMessageBox.question(
                     self,
-                    "Confirm Merge",
-                    f"Folder '{new_name}' already exists. Merge extensions from '{old_name}'?",
+                    _("Confirm Merge"),
+                    _("Folder '{}' already exists. Merge extensions from '{}'?").format(new_name, old_name),
                     QMessageBox.Yes | QMessageBox.No,
                     QMessageBox.No
                 )
@@ -272,21 +281,21 @@ class FileTypeManagerDialog(QDialog):
                 if index >= 0:
                     self.folder_combo.setCurrentIndex(index)
             else:
-                QMessageBox.warning(self, "Error", f"Failed to rename folder {old_name}")
+                QMessageBox.warning(self, _("Error"), _("Failed to rename folder {}").format(old_name))
 
     def delete_folder(self):
         """Delete the current folder and all its extensions."""
         folder_name = self.folder_combo.currentText()
 
         if not folder_name:
-            QMessageBox.warning(self, "Warning", "Please select a folder to delete")
+            QMessageBox.warning(self, _("Warning"), _("Please select a folder to delete"))
             return
 
         # Confirm deletion
         reply = QMessageBox.question(
             self,
-            "Confirm Deletion",
-            f"Delete folder '{folder_name}' and all its extensions?",
+            _("Confirm Deletion"),
+            _("Delete folder '{}' and all its extensions?").format(folder_name),
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No
         )
@@ -297,7 +306,7 @@ class FileTypeManagerDialog(QDialog):
                 # Update UI
                 self.load_folders()
             else:
-                QMessageBox.warning(self, "Error", f"Failed to delete folder {folder_name}")
+                QMessageBox.warning(self, _("Error"), _("Failed to delete folder {}").format(folder_name))
 
     def update_button_states(self):
         """Enable/disable buttons based on current selection."""
@@ -315,12 +324,19 @@ class FileTypeManagerDialog(QDialog):
 
     def retranslate_ui(self):
         """Update all UI texts with the current language."""
+        # Aktualisiere die gettext-Funktion mit der aktuellen Sprache
+        _ = Translation.get_translator().gettext
+
         self.setWindowTitle(_("File Type Manager"))
 
         # Folder management section
         folder_header = self.findChild(QLabel, "folder_header")
         if folder_header:
             folder_header.setText(_("<b>Folder Management</b>"))
+
+        folder_label = self.findChild(QLabel, "folder_label")
+        if folder_label:
+            folder_label.setText(_("Folder:"))
 
         self.add_folder_btn.setText(_("New Folder"))
         self.rename_folder_btn.setText(_("Rename"))
@@ -335,7 +351,4 @@ class FileTypeManagerDialog(QDialog):
         self.remove_ext_btn.setText(_("Remove Selected"))
         self.close_btn.setText(_("Close"))
 
-        # Labels
-        folder_label = self.findChild(QLabel, "folder_label")
-        if folder_label:
-            folder_label.setText(_("Folder:"))
+        self.new_extension.setPlaceholderText(_("New extension (e.g. .pdf)"))
