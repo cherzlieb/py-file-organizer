@@ -107,9 +107,6 @@ https://github.com/cherzlieb/py-file-organizer""")
 
             print("Release package created successfully!")
 
-        else:
-            raise Exception("Error: FileOrganizer.exe was not created successfully!")
-
     except Exception as e:        
         clear_release_by_error()
         print(f"Error creating release: {str(e)}")
