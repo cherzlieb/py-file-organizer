@@ -9,10 +9,10 @@ version = version_manager.load_version()
 
 PyInstaller.__main__.run([
     'src/main.py',  # Your main script
-    f'--name=FileOrganizer_{version}',  # Name of the executable
+    '--name=FileOrganizer',  # Name of the executable
     '--onefile',  # Create a single executable file
     # "--onedir",  # Create a directory with the executable and dependencies
-    # '--windowed',  # Don't show console window
+    '--windowed',  # Don't show console window
     f'--add-data={os.path.join(project_root, "src/locales")};locales',  # Include translations
     # '--icon=resources/icon.ico',  # Optional: Add an icon
     '--clean',  # Clean cache before building
