@@ -70,7 +70,16 @@ python src/main.py
 
 ### Screenshots
 
-![Screenshot](docs/images/screenshot.png)
+### Englisch / English
+
+![main-window-en](docs/images/main-window-en.png)
+![file-typ-window-en](docs/images/file-typ-window-en.png)
+
+### Deutsch / German
+
+![main-window-de](docs/images/main-window-de.png)
+![file-typ-window-de](docs/images/file-typ-window-de.png)
+
 
 ## Development / Entwicklung
 
