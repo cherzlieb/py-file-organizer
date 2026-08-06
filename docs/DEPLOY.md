@@ -6,61 +6,56 @@ Diese Anleitung erklärt, wie du Releases des File Organizers erstellst und ver�
 
 ## Recommended: GitHub Actions / Empfohlen: GitHub Actions
 
-Releases are built on **Windows** in GitHub Actions. This is the recommended method — especially if you develop on Linux, where a local `.exe` build is not possible.
+Releases are built on **Windows** in GitHub Actions and triggered by pushing a **git tag**.
 
-Releases werden auf **Windows** in GitHub Actions gebaut. Das ist die empfohlene Methode — besonders wenn du unter Linux entwickelst, wo kein lokaler `.exe`-Build möglich ist.
-
-### Prerequisites / Voraussetzungen
-
-- Changes pushed to the default branch / Änderungen auf den Default-Branch gepusht
-- GitHub Actions enabled for the repository / GitHub Actions für das Repository aktiviert
+Releases werden auf **Windows** in GitHub Actions gebaut und durch das Pushen eines **Git-Tags** ausgelöst.
 
 ### Create a release / Release erstellen
 
-1. Open the repository on GitHub / Öffne das Repository auf GitHub
-2. Go to **Actions** → **Release** / Gehe zu **Actions** → **Release**
-3. Click **Run workflow** / Klicke auf **Run workflow**
-4. Choose how to bump the version / Wähle, wie die Version erhöht werden soll:
+1. Make sure your changes are merged on `main` / Stelle sicher, dass deine Änderungen auf `main` sind
+2. Create and push a version tag / Erstelle und pushe einen Versions-Tag:
 
-| Option  | Example / Beispiel | When to use / Wann nutzen                          |
-| ------- | ------------------ | -------------------------------------------------- |
-| `patch` | 0.1.2 → 0.1.3      | Bug fixes / Bugfixes (default)                     |
-| `minor` | 0.1.2 → 0.2.0      | New features / Neue Funktionen                     |
-| `major` | 0.1.2 → 1.0.0      | Breaking changes / Breaking Changes                |
-| `none`  | stays 0.1.2        | Re-build only, no version bump / Nur neu bauen     |
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
 
-5. Click **Run workflow** / Klicke erneut auf **Run workflow**
+The tag name defines the release version. Prefix `v` is optional in the build script but recommended for GitHub.
+
+Der Tag-Name bestimmt die Release-Version. Das Präfix `v` ist im Build-Skript optional, für GitHub aber empfohlen.
+
+3. The **Release** workflow starts automatically / Der **Release**-Workflow startet automatisch
+4. When finished, download the ZIP under **Releases** / Nach Abschluss das ZIP unter **Releases** herunterladen
 
 ### What the workflow does / Was der Workflow macht
 
-1. Installs dependencies with `uv` / Installiert Abhängigkeiten mit `uv`
-2. Compiles translations / Kompiliert Übersetzungen
-3. Builds `FileOrganizer.exe` with PyInstaller / Baut `FileOrganizer.exe` mit PyInstaller
-4. Creates `Release/FileOrganizer-{version}.zip` / Erstellt `Release/FileOrganizer-{version}.zip`
-5. Commits the new `version.txt` (unless `none`) / Committet die neue `version.txt` (außer bei `none`)
-6. Creates a GitHub Release with tag `v{version}` / Erstellt ein GitHub Release mit Tag `v{version}`
+1. Reads the version from the pushed tag (e.g. `v0.2.0` → `0.2.0`) / Liest die Version aus dem gepushten Tag
+2. Installs dependencies with `uv` / Installiert Abhängigkeiten mit `uv`
+3. Compiles translations / Kompiliert Übersetzungen
+4. Builds `FileOrganizer.exe` with PyInstaller / Baut `FileOrganizer.exe` mit PyInstaller
+5. Creates `Release/FileOrganizer-{version}.zip` / Erstellt `Release/FileOrganizer-{version}.zip`
+6. Publishes a GitHub Release for the tag / Veröffentlicht ein GitHub Release für den Tag
 
-### After the workflow / Nach dem Workflow
+### Versioning / Versionierung
 
-If the version was bumped, pull the changes locally:
+There is no separate `version.txt`. The git tag is the single source of truth.
 
-Wurde die Version erhöht, hole die Änderungen lokal ab:
+Es gibt keine separate `version.txt`. Der Git-Tag ist die einzige Versionsquelle.
 
-```bash
-git pull
-```
+Examples / Beispiele:
 
-The release appears under **Releases** on GitHub with the ZIP attached.
-
-Das Release erscheint unter **Releases** auf GitHub mit dem ZIP als Download.
+| Tag       | ZIP name                      | GitHub Release   |
+| --------- | ----------------------------- | ---------------- |
+| `v0.2.0`  | `FileOrganizer-0.2.0.zip`     | `File Organizer v0.2.0` |
+| `v1.0.0`  | `FileOrganizer-1.0.0.zip`     | `File Organizer v1.0.0` |
 
 ---
 
 ## Optional: Local build on Windows / Optional: Lokaler Build unter Windows
 
-Only needed if you want to test the build process locally before triggering the workflow.
+Only needed if you want to test the build process locally before creating a tag.
 
-Nur nötig, wenn du den Build-Prozess lokal testen willst, bevor du den Workflow startest.
+Nur nötig, wenn du den Build-Prozess lokal testen willst, bevor du einen Tag erstellst.
 
 ### Prerequisites / Voraussetzungen
 
@@ -74,15 +69,11 @@ Nur nötig, wenn du den Build-Prozess lokal testen willst, bevor du den Workflow
 # Install dependencies / Abhängigkeiten installieren
 uv sync
 
-# Create release (interactive version prompt) / Release erstellen (interaktive Versionsabfrage)
+# Build using the latest git tag / Build mit dem neuesten Git-Tag
 uv run python scripts/create_release.py
-```
 
-Non-interactive options / Nicht-interaktive Optionen:
-
-```powershell
-uv run python scripts/create_release.py --bump patch
-uv run python scripts/create_release.py --no-bump
+# Or specify a version explicitly / Oder Version explizit angeben
+uv run python scripts/create_release.py --version 0.2.0
 ```
 
 Output / Ausgabe:
@@ -90,9 +81,9 @@ Output / Ausgabe:
 - `Release/FileOrganizer-{version}.zip`
 - Build artifacts in `Release/files/` / Build-Artefakte in `Release/files/`
 
-> **Note / Hinweis:** A local build does **not** create a GitHub Release. Upload the ZIP manually or use the GitHub Actions workflow instead.
+> **Note / Hinweis:** A local build does **not** create a GitHub Release. Push a tag or upload the ZIP manually.
 >
-> Ein lokaler Build erstellt **kein** GitHub Release. Lade das ZIP manuell hoch oder nutze stattdessen den GitHub-Actions-Workflow.
+> Ein lokaler Build erstellt **kein** GitHub Release. Tag pushen oder ZIP manuell hochladen.
 
 ---
 
@@ -111,25 +102,12 @@ Release/
 └── README.txt
 ```
 
-The ZIP file is named `FileOrganizer-{version}.zip` (e.g. `FileOrganizer-0.1.3.zip`).
-
-Die ZIP-Datei heißt `FileOrganizer-{version}.zip` (z. B. `FileOrganizer-0.1.3.zip`).
-
-## Version file / Versionsdatei
-
-The current version is stored in `version.txt` at the project root.
-
-Die aktuelle Version steht in `version.txt` im Projektroot.
-
-The GitHub Actions workflow updates this file automatically when bumping the version.
-
-Der GitHub-Actions-Workflow aktualisiert diese Datei automatisch, wenn die Version erhöht wird.
-
 ## Troubleshooting / Fehlerbehebung
 
 | Problem                                              | Solution / Lösung                                                              |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Workflow fails: tag already exists / Tag existiert   | Choose a version bump (`patch`, `minor`, `major`) instead of `none`           |
+| Workflow does not start / startet nicht              | Tag must match `v*` (e.g. `v0.2.0`) / Tag muss `v*` entsprechen (z. B. `v0.2.0`) |
+| Workflow fails: tag/release already exists / existiert | Delete tag and release on GitHub, then re-push / Tag und Release auf GitHub löschen, erneut pushen |
 | Local build fails on Linux / Lokaler Build scheitert | Expected — use GitHub Actions / Erwartet — GitHub Actions nutzen               |
-| Local build: `No module named 'pkg_resources'`     | Fixed by `altgraph>=0.17.5` (works with `setuptools>=82`) / Behoben durch `altgraph>=0.17.5` (funktioniert mit `setuptools>=82`) |
-| `version.txt` out of sync / nicht synchron           | Run `git pull` after a successful workflow / Nach erfolgreichem Workflow `git pull` |
+| Local build: `No module named 'pkg_resources'`     | Fixed by `altgraph>=0.17.5` (works with `setuptools>=82`) / Behoben durch `altgraph>=0.17.5` |
+| Local build: no git tag / kein Git-Tag               | Create a tag first or pass `--version` / Tag erstellen oder `--version` angeben |
