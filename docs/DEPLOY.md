@@ -131,5 +131,5 @@ Der GitHub-Actions-Workflow aktualisiert diese Datei automatisch, wenn die Versi
 | ---------------------------------------------------- | ------------------------------------------------------------------------------ |
 | Workflow fails: tag already exists / Tag existiert   | Choose a version bump (`patch`, `minor`, `major`) instead of `none`           |
 | Local build fails on Linux / Lokaler Build scheitert | Expected — use GitHub Actions / Erwartet — GitHub Actions nutzen               |
-| Local build: `No module named 'pkg_resources'`     | Use Python 3.12, not 3.14 / Python 3.12 nutzen, nicht 3.14                    |
+| Local build: `No module named 'pkg_resources'`     | Fixed by `altgraph>=0.17.5` (works with `setuptools>=82`) / Behoben durch `altgraph>=0.17.5` (funktioniert mit `setuptools>=82`) |
 | `version.txt` out of sync / nicht synchron           | Run `git pull` after a successful workflow / Nach erfolgreichem Workflow `git pull` |
