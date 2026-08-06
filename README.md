@@ -24,14 +24,31 @@ Ausführliche Dokumentation ist verfügbar in: / Detailed documentation is avail
 
 ## Quick Start / Schnellstart
 
-### Installation
-
 1. Repository klonen / Clone repository:
 
 ```bash
-git clone https://github.com/cherzlieb/py-file-organizer
+git clone [https://github.com/cherzlieb/py-file-organizer](https://github.com/cherzlieb/py-file-organizer)
 cd py-file-organizer
 ```
+
+Wählen Sie eine der folgenden Installationsmethoden: / Choose one of the following installation methods:
+
+### Option A: Mit `uv` (Empfohlen / Recommended)
+
+[uv](https://github.com/astral-sh/uv) ist ein extrem schneller Python-Paketmanager.
+
+```bash
+# Umgebung einrichten & Abhängigkeiten installieren / Setup environment & install dependencies
+uv sync
+
+# Übersetzungen kompilieren / Compile translations
+uv run python scripts/compile_translations.py
+
+# Anwendung starten / Launch application
+uv run python src/main.py
+```
+
+### Option B: Klassische Methode / Classical Method (`venv` & `pip`)
 
 1. Virtuelle Umgebung erstellen / Create virtual environment:
 
@@ -45,46 +62,45 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-1. Abhängigkeiten installieren / Install dependencies:
+2. Abhängigkeiten installieren / Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Start / Launch
+3. Übersetzungen kompilieren / Compile translations:
 
-Starten Sie die Anwendung / Launch the application:
+```bash
+python scripts/compile_translations.py
+```
+
+4. Starten Sie die Anwendung / Launch the application:
 
 ```bash
 python src/main.py
 ```
 
-### Erste Schritte / First Steps
+---
+
+## Erste Schritte / First Steps
 
 1. Wählen Sie Ihre Sprache / Select your language
 2. Konfigurieren Sie die Ordner / Configure folders:
-   - Quellordner / Source folder
-   - Zielordner / Target folder
-   - Nicht-sortierbare / Unorganized
+* Quellordner / Source folder
+* Zielordner / Target folder
+* Nicht-sortierbare / Unorganized
+
+
 3. Klicken Sie auf "Start" / Click "Start"
 
-### Screenshots
+## Screenshots
 
 ### Englisch / English
 
-![main-window-en](docs/images/main-window-en.png)
-
-![file-typ-window-en](docs/images/file-typ-window-en.png)
-
 ### Deutsch / German
-
-![main-window-de](docs/images/main-window-de.png)
-
-![file-typ-window-de](docs/images/file-typ-window-de.png)
-
 
 ## Development / Entwicklung
 
-For build and deployment instructions, see [DEPLOY.md](docs/DEPLOY.md).
+For build and deployment instructions, see [DEPLOY.md](https://www.google.com/search?q=docs/DEPLOY.md).
 
-Informationen zum Erstellen und Veröffentlichen finden Sie in der [DEPLOY.md](docs/DEPLOY.md).
+Informationen zum Erstellen und Veröffentlichen finden Sie in der [DEPLOY.md](https://www.google.com/search?q=docs/DEPLOY.md).

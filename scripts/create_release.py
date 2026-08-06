@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 import subprocess
@@ -7,7 +8,22 @@ from release_version import VersionManager
 from clear_release_by_error import main as clear_release_by_error
 
 
-def create_release():
+def parse_args():
+    parser = argparse.ArgumentParser(description="Create a release package.")
+    parser.add_argument(
+        "--bump",
+        choices=["major", "minor", "patch"],
+        help="Increment version (non-interactive, for CI)",
+    )
+    parser.add_argument(
+        "--no-bump",
+        action="store_true",
+        help="Keep current version without prompting (non-interactive, for CI)",
+    )
+    return parser.parse_args()
+
+
+def create_release(bump_part=None, no_bump=False):
     """Create a release package."""
     try:
         # Compile translations
@@ -22,7 +38,14 @@ def create_release():
         version_manager = VersionManager("version.txt")
         current_version  = version_manager.load_version()
         
-        part = input("Was möchtest du hochzählen? (MAJOR, MINOR, PATCH, leer lassen für keine Änderung): ")
+        if no_bump:
+            part = ""
+        elif bump_part is not None:
+            part = bump_part
+        else:
+            part = input(
+                "Was möchtest du hochzählen? (MAJOR, MINOR, PATCH, leer lassen für keine Änderung): "
+            )
 
         # Neue Version setzen oder behalten
         new_version = version_manager.set_version(part if part else None)
@@ -114,4 +137,5 @@ https://github.com/cherzlieb/py-file-organizer""")
 
 
 if __name__ == "__main__":
-    create_release()
+    args = parse_args()
+    create_release(bump_part=args.bump, no_bump=args.no_bump)
